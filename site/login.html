@@ -48,15 +48,18 @@
                         </div>
                         <div class="login-form">
                             <form action="" method="post">
+                                {% if error %}
+                                    <p class=error><strong>Error:</strong>{{ error }}
+                                {% end if %}
                                 <div class="form-group">
                                     <label>Usuario</label>
-                                    <input class="au-input au-input--full" type="email" name="email" placeholder="Usuario">
+                                    <input class="au-input au-input--full" type="text" name="username" id="user" placeholder="Usuario">
                                 </div>
                                 <div class="form-group">
                                     <label>Password</label>
-                                    <input class="au-input au-input--full" type="password" name="password" placeholder="Password">
+                                    <input class="au-input au-input--full" type="password" name="password" id="password" placeholder="Password">
                                 </div>
-                                <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">INICIAR SESIÓN </button>
+                                <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit" value="Login">INICIAR SESIÓN </button>
                             </form>
                         </div>
                     </div>

@@ -1,35 +1,9 @@
-import pymysql
+from flask import Flask, render_template
 
-from menuMaterial import MenuMaterial
+app = Flask(__name__)
 
-conexion = pymysql.connect("localhost","gus","1234","joyeria")
-cursor = conexion.cursor()
-
-while True:
-    print("")
-    print("   *   *  *****  *   *  *   *  ")
-    print("   ** **  *      **  *  *   *  ")
-    print("   * * *  *****  * * *  *   *  ")
-    print("   *   *  *      *  **  *   *  ")
-    print("   *   *  *****  *   *  *****  ")
-    print("")
-    print("1) Almacen")
-    print("2) Material")
-    print("3) Perfil")
-    print("4) Empleado")
-    print("5) Registro")
-    print("0) Salir ")
-    print("Elige una opcion: ")
-    op=input()
-    
-    if op == "1":
-        MenuMaterial(conexion,cursor)
-        
-    elif op == "2":
-        MenuMaterial(conexion,cursor) 
-        
-    elif op == "0":
-        conexion.close()
-        break
-
-
+@app.route('/')
+def Index():
+    return render_template('../index.html')
+if __name__ == "__main__":
+    app.run(debug=True)

@@ -10,16 +10,7 @@ if __name__ == '__main__':
     app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 
 class ServerError(Exception):pass
-
-@app.route('/')
-def index():
-    if 'username' in session:
-        return redirect(url_for('login'))
-        
-    username_session = escape(session['username']).capitalize()
-    return render_template('index.html', session_user_name=username_session)
-
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
 def login():
     if 'username' in session:
         return redirect(url_for('index'))
@@ -49,11 +40,20 @@ def login():
 
     return render_template('login.html', error=error)
 
+@app.route('/index')
+def index():
+    if 'username' in session:
+        return redirect(url_for('index'))
+        
+    username_session = escape(session['username']).capitalize()
+    return render_template('login.html', session_user_name=username_session)
+
+
 
 @app.route('/logout')
 def logout():
     session.pop('username', None)
-    return redirect(url_for('index'))
+    return redirect(url_for('login'))
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -4,16 +4,10 @@ import pymysql
 
 app = Flask(__name__)
 
-if __name__ == '__main__':
-    db = pymysql.connect(host="localhost", user="root", passwd="", db="joyeria")
-    cur = db.cursor()
-    app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
-
-class ServerError(Exception):pass
 @app.route('/', methods=['GET', 'POST'])
 def login():
     if 'username' in session:
-        return redirect(url_for('index'))
+        return redirect(url_for('index.html'))
 
     error = None
     try:
@@ -32,7 +26,7 @@ def login():
             for row in cur.fetchall():
                 if md5(password_form).hexdigest() == row[0]:
                     session['username'] = request.form['username']
-                    return redirect(url_for('index'))
+                    return redirect(url_for('index.html'))
 
             raise ServerError('Invalid password')
     except ServerError as e:
@@ -56,4 +50,10 @@ def logout():
     return redirect(url_for('login'))
 
 if __name__ == '__main__':
+    db = pymysql.connect(host="localhost", user="root", passwd="", db="joyeria")
+    cur = db.cursor()
+    app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
     app.run(debug=True)
+
+class ServerError(Exception):pass
+    

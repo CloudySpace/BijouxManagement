@@ -1,3 +1,20 @@
+<?php
+  session_start();
+  require 'conexion.php';
+  if (isset($_SESSION['user_id'])) {
+    $records = $conn->prepare('SELECT id, id_perfil, name, username, password FROM empleado WHERE id = :id');
+    $records->bindParam(':id', $_SESSION['user_id']);
+    $records->execute();
+    $results = $records->fetch(PDO::FETCH_ASSOC);
+    $user = null;
+    $messageUsuario = '';
+    $messageUsername = '';
+    if ($results && count($results) > 0) {
+      $user = $results;
+    }
+  }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -199,28 +216,28 @@
                                                 </div>
                                                 <div class="content">
                                                     <h5 class="name">
-                                                        <a href="#">john doe</a>
+                                                        <?php if(!empty($user)): ?>
+                                                        <a href="#"><?= $user['name']; ?></a>
+                                                        <?php endif; ?>
                                                     </h5>
-                                                    <span class="email">johndoe@example.com</span>
+                                                    <?php if(!empty($user)): ?>
+                                                        <span class="email"><?= $user['username']; ?></span>
+                                                    <?php endif; ?>
                                                 </div>
                                             </div>
                                             <div class="account-dropdown__body">
                                                 <div class="account-dropdown__item">
-                                                    <a href="#">
-                                                        <i class="zmdi zmdi-account"></i>Account</a>
-                                                </div>
-                                                <div class="account-dropdown__item">
-                                                    <a href="#">
-                                                        <i class="zmdi zmdi-settings"></i>Setting</a>
-                                                </div>
-                                                <div class="account-dropdown__item">
-                                                    <a href="#">
-                                                        <i class="zmdi zmdi-money-box"></i>Billing</a>
+                                                    <?php if(empty($user)): ?>
+                                                    <a href="login.php">
+                                                        <i class="zmdi zmdi-account"></i>Login</a>
+                                                    <?php endif; ?>
                                                 </div>
                                             </div>
                                             <div class="account-dropdown__footer">
-                                                <a href="logout.php">
-                                                    <i class="zmdi zmdi-power"></i>Logout</a>
+                                                <?php if(!empty($user)): ?>
+                                                    <a href="logout.php">
+                                                        <i class="zmdi zmdi-power"></i>Logout</a>
+                                                <?php endif; ?>
                                             </div>
                                         </div>
                                     </div>
@@ -399,9 +416,6 @@
                             <div class="col-md-12">
                                 <div class="copyright">
                                     <p>Copyright © 2018 Colorlib. All rights reserved. Template by <a href="https://colorlib.com">Colorlib</a>.</p>
-                                    <a href="logout.php">
-                                     Logout
-                                    </a>
                                 </div>
                             </div>
                         </div>

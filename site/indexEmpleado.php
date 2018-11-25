@@ -10,7 +10,10 @@
     $messageUsuario = '';
     $messageUsername = '';
     if ($results && count($results) > 0) {
-      $user = $results;
+        $user = $results;
+        $busqued = $_SESSION['user_id'];
+        $link = mysqli_connect("localhost", "root", "", "joyeria") or die ('Error de conexion: ' . mysqli_error());
+        $resultado = mysqli_query($link,"select material.name, material.quilataje, registro.peso, registro.fecha_ingreso,   registro.fecha_modificacion from material,registro WHERE registro.id_empleado = '$busqued' and material.id =         registro.id_material ORDER BY registro.fecha_ingreso DESC");
     }
   }
 ?>
@@ -265,51 +268,29 @@
                                         <table class="table table-borderless table-data3">
                                             <thead>
                                                 <tr>
-                                                    <th>Fecha</th>
-                                                    <th>Peso (kg)</th>
                                                     <th>Nombre</th>
-                                                    <th>Estado</th>
                                                     <th>Quilataje</th>
+                                                    <th>Peso (kg)</th>
+                                                    <th>Fecha Ingreso</th>
+                                                    <th>Fecha de Modificación</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>2018-09-29 05:57</td>
-                                                    <td>1.25</td>
-                                                    <td>Oro</td>
-                                                    <td class="process">Entrada</td>
-                                                    <td>24</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>2018-09-28 01:22</td>
-                                                    <td>0.95</td>
-                                                    <td>Oro</td>
-                                                    <td class="process">Entrada</td>
-                                                    <td>18</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>2018-09-27 02:12</td>
-                                                    <td>2.00</td>
-                                                    <td>Plata</td>
-                                                    <td class="denied">Salida</td>
-                                                    <td>12</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>2018-09-26 23:06</td>
-                                                    <td>1.75</td>
-                                                    <td>Platino</td>
-                                                    <td class="denied">Salida</td>
-                                                    <td>10</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>2018-09-25 19:03</td>
-                                                    <td>1.50</td>
-                                                    <td>Plata</td>
-                                                    <td class="process">Entrada</td>
-                                                    <td>11.1</td>
-                                                </tr>
-                                                
-                                            </tbody>
+                                            <?php while($row = mysqli_fetch_assoc($resultado)){
+                                            ?>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><?= $row['name']; ?></td>
+                                                        <td><?= $row['quilataje']; ?></td>
+                                                        <td><?= $row['peso']; ?></td>
+                                                        <td><?= $row['fecha_ingreso']; ?></td>
+                                                        <td><?= $row['fecha_modificacion']; ?></td>
+                                                    </tr>
+                                                    
+                                                </tbody>
+                                            <?php
+                                                }
+                                            ?>
+                                            
                                         </table>
                                     </div>
                                     <!-- END DATA TABLE-->

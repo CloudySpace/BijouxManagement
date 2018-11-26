@@ -14,7 +14,7 @@
     $message = '';
     if ($results && count($results) > 0 && ($_POST['password'] == $results['password'])) {
       $_SESSION['user_id'] = $results['id'];
-      header("Location: /joyeria/joyeria_php/puente.php");
+      header("Location: /../puente.php");
     } else {
       $message = 'Datos erroneos';
     }

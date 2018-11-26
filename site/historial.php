@@ -62,11 +62,11 @@
                                 <i class="fas fa-tachometer-alt"></i>Overview</a>
                         </li>
                         <li>
-                            <a href="materialEmpleado.html">
+                            <a href="materialEmpleado.php">
                                 <i class="fas fa-table"></i>Materiales</a>
                         </li>
                         <li>
-                            <a href="historialEmpleado.html">
+                            <a href="historialEmpleado.php">
                                 <i class="fas fa-book"></i>Historial</a>
                         </li>
                         <li class="has-sub">
@@ -113,7 +113,7 @@
                                     <a href="switch.html">Switchs</a>
                                 </li>
                                 <li>
-                                    <a href="grid.html">Grids</a>
+                                    <a href="grid.php">Grids</a>
                                 </li>
                                 <li>
                                     <a href="fontawesome.html">Fontawesome Icon</a>
@@ -144,15 +144,15 @@
                                         <i class="fas fa-tachometer-alt"></i>Overview</a>
                                 </li>
                                 <li>
-                                    <a href="material.html">
+                                    <a href="material.php">
                                         <i class="fas fa-table"></i>Materiales</a>
                                 </li>
                                 <li>
-                                    <a href="empleado.html">
+                                    <a href="empleado.php">
                                         <i class="far fa-check-square"></i>Empleados</a>
                                 </li>
                                 <li class="active has-sub">
-                                        <a href="historial.html">
+                                        <a href="historial.php">
                                             <i class="far fa-check-square"></i>Historial</a>
                                 </li>
                         

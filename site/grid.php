@@ -138,7 +138,7 @@
                   <a href="switch.html">Switchs</a>
                 </li>
                 <li>
-                  <a href="grid.html">Grids</a>
+                  <a href="grid.php">Grids</a>
                 </li>
                 <li>
                   <a href="fontawesome.html">Fontawesome Icon</a>
@@ -246,7 +246,7 @@
                   <a href="switch.html">Switchs</a>
                 </li>
                 <li>
-                  <a href="grid.html">Grids</a>
+                  <a href="grid.php">Grids</a>
                 </li>
                 <li>
                   <a href="fontawesome.html">Fontawesome Icon</a>

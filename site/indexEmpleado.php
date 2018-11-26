@@ -272,10 +272,12 @@
                                                     <th>Quilataje</th>
                                                     <th>Peso (kg)</th>
                                                     <th>Fecha Ingreso</th>
-                                                    <th>Fecha de Modificación</th>
+                                                    <th>Movimiento</th>
                                                 </tr>
                                             </thead>
-                                            <?php while($row = mysqli_fetch_assoc($resultado)){
+                                            <?php if(isset($resultado)): ?>
+                                            <?php $cont = 0; ?>
+                                            <?php while($row = mysqli_fetch_assoc($resultado) and $cont < 10){
                                             ?>
                                                 <tbody>
                                                     <tr>
@@ -288,8 +290,10 @@
                                                     
                                                 </tbody>
                                             <?php
+                                                $cont = $cont + 1;
                                                 }
                                             ?>
+                                            <?php endif; ?>
                                             
                                         </table>
                                     </div>

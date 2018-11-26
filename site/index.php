@@ -2,7 +2,7 @@
 
   session_start();
   if (isset($_SESSION['user_id'])) {
-    header('Location: /joyeria/joyeria_php/puente.php');
+    header('Location: /../puente.php');
   }
 
   require 'conexion.php';

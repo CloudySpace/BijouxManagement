@@ -1,3 +1,23 @@
+<?php
+  session_start();
+  require 'conexion.php';
+  if (isset($_SESSION['user_id'])) {
+    $records = $conn->prepare('SELECT id, id_perfil, name, username, password, id_Almacen FROM empleado WHERE id = :id');
+    $records->bindParam(':id', $_SESSION['user_id']);
+    $records->execute();
+    $results = $records->fetch(PDO::FETCH_ASSOC);
+    $user = null;
+    $messageUsuario = '';
+    $messageUsername = '';
+    if ($results && count($results) > 0) {
+        $user = $results;
+        $busqued = $user['id_Almacen'];
+        $link = mysqli_connect("localhost", "root", "", "joyeria") or die ('Error de conexion: ' . mysqli_error());
+        $resultado = mysqli_query($link,"SELECT registro.fecha_actualizacion, empleado.name as nombre, material.name, registro.peso, material.quilataje, registro.estado, material.id as id_material, empleado.id as id_empleado FROM material,registro,empleado WHERE registro.id_Almacen = '$busqued' and material.id_Almacen = '$busqued' and empleado.id_Almacen = '$busqued' and material.id = registro.id_material and empleado.id = registro.id_empleado ORDER BY registro.fecha_actualizacion DESC");
+    }
+  }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -58,7 +78,7 @@
                     <ul class="navbar-mobile__list list-unstyled">
                         <li class="has-sub">
                         <li class="active has-sub">
-                            <a href="index.html">
+                            <a href="home.php">
                                 <i class="fas fa-tachometer-alt"></i>Overview</a>
                         </li>
                         <li>
@@ -140,7 +160,7 @@
                 <nav class="navbar-sidebar">
                     <ul class="list-unstyled navbar__list">
                             <li>
-                                    <a href="index.html">
+                                    <a href="home.php">
                                         <i class="fas fa-tachometer-alt"></i>Overview</a>
                                 </li>
                                 <li>
@@ -172,52 +192,47 @@
                     <div class="container-fluid">
                         <div class="header-wrap">
                             <form class="form-header" action="" method="POST">
-                                <input class="au-input au-input--xl" type="text" name="search" placeholder="Search for datas &amp; reports..." />
-                                <button class="au-btn--submit" type="submit">
-                                    <i class="zmdi zmdi-search"></i>
-                                </button>
+                                
                             </form>
                             <div class="header-button">
 
                                 <div class="account-wrap">
                                     <div class="account-item clearfix js-item-menu">
                                         <div class="image">
-                                            <img src="images/icon/avatar-01.jpg" alt="John Doe" />
+                                            <img src="images/admin.png" alt="Admin" />
                                         </div>
                                         <div class="content">
-                                            <a class="js-acc-btn" href="#">Administrador</a>
+                                            <a class="js-acc-btn"><?= $user['name']; ?></a>
                                         </div>
                                         <div class="account-dropdown js-dropdown">
                                             <div class="info clearfix">
                                                 <div class="image">
-                                                    <a href="#">
-                                                        <img src="images/icon/avatar-01.jpg" alt="John Doe" />
-                                                    </a>
+                                                    <img src="images/admin.png" alt="Admin" />
                                                 </div>
                                                 <div class="content">
                                                     <h5 class="name">
-                                                        <a href="#">john doe</a>
+                                                        <?php if(!empty($user)): ?>
+                                                        <a href="#"><?= $user['name']; ?></a>
+                                                        <?php endif; ?>
                                                     </h5>
-                                                    <span class="email">johndoe@example.com</span>
+                                                    <?php if(!empty($user)): ?>
+                                                        <span class="email"><?= $user['username']; ?></span>
+                                                    <?php endif; ?>
                                                 </div>
                                             </div>
                                             <div class="account-dropdown__body">
                                                 <div class="account-dropdown__item">
-                                                    <a href="#">
-                                                        <i class="zmdi zmdi-account"></i>Account</a>
-                                                </div>
-                                                <div class="account-dropdown__item">
-                                                    <a href="#">
-                                                        <i class="zmdi zmdi-settings"></i>Setting</a>
-                                                </div>
-                                                <div class="account-dropdown__item">
-                                                    <a href="#">
-                                                        <i class="zmdi zmdi-money-box"></i>Billing</a>
+                                                    <?php if(empty($user)): ?>
+                                                    <a href="login.php">
+                                                        <i class="zmdi zmdi-account"></i>Login</a>
+                                                    <?php endif; ?>
                                                 </div>
                                             </div>
                                             <div class="account-dropdown__footer">
-                                                <a href="#">
-                                                    <i class="zmdi zmdi-power"></i>Logout</a>
+                                                <?php if(!empty($user)): ?>
+                                                    <a href="logout.php">
+                                                        <i class="zmdi zmdi-power"></i>Logout</a>
+                                                <?php endif; ?>
                                             </div>
                                         </div>
                                     </div>
@@ -251,95 +266,32 @@
                                                         <th class="text-right">Estado</th>
                                                     </tr>
                                                 </thead>
+                                                <?php if(isset($resultado)): ?>
+                                                    <?php while($row = mysqli_fetch_assoc($resultado)){
+                                                ?>
                                                 <tbody>
                                                     <tr>
-                                                        <td>2018-09-29 05:57</td>
-                                                        <td>100398</td>
-                                                        <td>Jonathan Avila</td>
-                                                        <td class="text-right">313</td>
-                                                        <td class="text-right">Plata</td>
-                                                        <td class="text-right">1.25</td>
-                                                        <td class="text-right">12</td>
-                                                        <td class="text-right">Entrada</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>2018-09-28 01:22</td>
-                                                        <td>100397</td>
-                                                        <td>Carlos Torres</td>
-                                                        <td class="text-right">925</td>
-                                                        <td class="text-right">Oro</td>
-                                                        <td class="text-right">2.00</td>
-                                                        <td class="text-right">14</td>
-                                                        <td class="text-right">Entrada</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>2018-09-27 02:12</td>
-                                                        <td>100396</td>
-                                                        <td>Luisa Flores</td>
-                                                        <td class="text-right">115</td>
-                                                        <td class="text-right">Platino</td>
-                                                        <td class="text-right">1.50</td>
-                                                        <td class="text-right">10</td>
-                                                        <td class="text-right">Salida</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>2018-09-26 23:06</td>
-                                                        <td>100395</td>
-                                                        <td>Pedro Paramo</td>
-                                                        <td class="text-right">738</td>
-                                                        <td class="text-right">Diamante</td>
-                                                        <td class="text-right">0.05</td>
-                                                        <td class="text-right">5</td>
-                                                        <td class="text-right">Entrada</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>2018-09-25 19:03</td>
-                                                        <td>100393</td>
-                                                        <td>Juan Rulfo</td>
-                                                        <td class="text-right">738</td>
-                                                        <td class="text-right">Diamante</td>
-                                                        <td class="text-right">0.02</td>
-                                                        <td class="text-right">2</td>
-                                                        <td class="text-right">Entrada</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>2018-09-29 05:57</td>
-                                                        <td>100392</td>
-                                                        <td>Humberto Suarez</td>
-                                                        <td class="text-right">925</td>
-                                                        <td class="text-right">Oro</td>
-                                                        <td class="text-right">2.25</td>
-                                                        <td class="text-right">24</td>
-                                                        <td class="text-right">Salida</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>2018-09-24 19:10</td>
-                                                        <td>100391</td>
-                                                        <td>Carolina Moreno</td>
-                                                        <td class="text-right">313</td>
-                                                        <td class="text-right">Plata</td>
-                                                        <td class="text-right">0.78</td>
-                                                        <td class="text-right">12</td>
-                                                        <td class="text-right">Salida</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>2018-09-22 00:43</td>
-                                                        <td>100393</td>
-                                                        <td>Anahi Ruvalcaba</td>
-                                                        <td class="text-right">313</td>
-                                                        <td class="text-right">Plata</td>
-                                                        <td class="text-right">0.98</td>
-                                                        <td class="text-right">12</td>
-                                                        <td class="text-right">Entrada</td>
+                                                        <td><?= $row['fecha_actualizacion'] ?></td>
+                                                        <td><?= $row['id_empleado'] ?></td>
+                                                        <td><?= $row['nombre'] ?></td>
+                                                        <td><?= $row['id_material'] ?></td>
+                                                        <td><?= $row['name'] ?></td>
+                                                        <td class="text-right"><?= $row['peso'] ?></td>
+                                                        <td class="text-right"><?= $row['quilataje'] ?></td>
+                                                        <td class="text-right"><?= $row['estado'] ?></td>
                                                     </tr>
                                                 </tbody>
+                                                <?php
+                                                    }
+                                                ?>
+                                                <?php endif; ?>
                                             </table>
                                         </div>
                                     </div>
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="copyright">
-                                    <p>Copyright © 2018 Colorlib. All rights reserved. Template by <a href="https://colorlib.com">Colorlib</a>.</p>
+                                    
                                 </div>
                             </div>
                         </div>

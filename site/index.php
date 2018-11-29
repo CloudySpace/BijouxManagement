@@ -2,7 +2,7 @@
 
   session_start();
   if (isset($_SESSION['user_id'])) {
-    header('Location: /../puente.php');
+    header('Location: ../site/puente.php');
   }
 
   require 'conexion.php';
@@ -14,7 +14,7 @@
     $message = '';
     if ($results && count($results) > 0 && ($_POST['password'] == $results['password'])) {
       $_SESSION['user_id'] = $results['id'];
-      header("Location: /../puente.php");
+      header("Location: ../site/puente.php");
     } else {
       $message = 'Datos erroneos';
     }

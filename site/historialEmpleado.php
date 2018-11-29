@@ -1,3 +1,23 @@
+<?php
+  session_start();
+  require 'conexion.php';
+  if (isset($_SESSION['user_id'])) {
+    $records = $conn->prepare('SELECT id, id_perfil, name, username, password FROM empleado WHERE id = :id');
+    $records->bindParam(':id', $_SESSION['user_id']);
+    $records->execute();
+    $results = $records->fetch(PDO::FETCH_ASSOC);
+    $user = null;
+    $messageUsuario = '';
+    $messageUsername = '';
+    if ($results && count($results) > 0) {
+        $user = $results;
+        $busqued = $_SESSION['user_id'];
+        $link = mysqli_connect("localhost", "root", "", "joyeria") or die ('Error de conexion: ' . mysqli_error());
+        $resultado = mysqli_query($link,"select material.name, material.quilataje, registro.peso, registro.fecha_actualizacion, registro.estado from material,registro WHERE registro.id_empleado = '$busqued' and material.id = registro.id_material ORDER BY registro.fecha_actualizacion DESC");
+    }
+  }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -42,7 +62,7 @@
             <div class="header-mobile__bar">
                 <div class="container-fluid">
                     <div class="header-mobile-inner">
-                        <a class="logo" href="indexEmpleado.html">
+                        <a class="logo" href="homeEmpleado.php">
                             <img src="images/icon/logo.png" alt="CoolAdmin" />
                         </a>
                         <button class="hamburger hamburger--slider" type="button">
@@ -58,7 +78,7 @@
                     <ul class="navbar-mobile__list list-unstyled">
                         <li class="has-sub">
                         <li class="active has-sub">
-                            <a href="index.html">
+                            <a href="homeEmpleado.php">
                                 <i class="fas fa-tachometer-alt"></i>Overview</a>
                         </li>
                         <li>
@@ -140,7 +160,7 @@
                 <nav class="navbar-sidebar">
                     <ul class="list-unstyled navbar__list">
                         <li>
-                            <a href="indexEmpleado.html">
+                            <a href="homeEmpleado.php">
                                 <i class="fas fa-tachometer-alt"></i>Overview</a>
                         </li>
                         <li>
@@ -169,52 +189,49 @@
                     <div class="container-fluid">
                         <div class="header-wrap">
                             <form class="form-header" action="" method="POST">
-                                <input class="au-input au-input--xl" type="text" name="search" placeholder="Search for datas &amp; reports..." />
-                                <button class="au-btn--submit" type="submit">
-                                    <i class="zmdi zmdi-search"></i>
-                                </button>
+                                
                             </form>
                             <div class="header-button">
 
                                 <div class="account-wrap">
                                     <div class="account-item clearfix js-item-menu">
                                         <div class="image">
-                                            <img src="images/icon/avatar-01.jpg" alt="John Doe" />
+                                            <img src="images/user.png" alt="User" />
                                         </div>
                                         <div class="content">
-                                            <a class="js-acc-btn" href="#">Empleado</a>
+                                             <a class="js-acc-btn"><?= $user['name']; ?></a>
                                         </div>
                                         <div class="account-dropdown js-dropdown">
                                             <div class="info clearfix">
                                                 <div class="image">
                                                     <a href="#">
-                                                        <img src="images/icon/avatar-01.jpg" alt="John Doe" />
+                                                        <img src="images/user.png" alt="User" />
                                                     </a>
                                                 </div>
                                                 <div class="content">
                                                     <h5 class="name">
-                                                        <a href="#">john doe</a>
+                                                        <?php if(!empty($user)): ?>
+                                                        <a href="#"><?= $user['name']; ?></a>
+                                                        <?php endif; ?>
                                                     </h5>
-                                                    <span class="email">johndoe@example.com</span>
+                                                    <?php if(!empty($user)): ?>
+                                                        <span class="email"><?= $user['username']; ?></span>
+                                                    <?php endif; ?>
                                                 </div>
                                             </div>
                                             <div class="account-dropdown__body">
                                                 <div class="account-dropdown__item">
-                                                    <a href="#">
-                                                        <i class="zmdi zmdi-account"></i>Account</a>
-                                                </div>
-                                                <div class="account-dropdown__item">
-                                                    <a href="#">
-                                                        <i class="zmdi zmdi-settings"></i>Setting</a>
-                                                </div>
-                                                <div class="account-dropdown__item">
-                                                    <a href="#">
-                                                        <i class="zmdi zmdi-money-box"></i>Billing</a>
+                                                    <?php if(empty($user)): ?>
+                                                    <a href="login.php">
+                                                        <i class="zmdi zmdi-account"></i>Login</a>
+                                                    <?php endif; ?>
                                                 </div>
                                             </div>
                                             <div class="account-dropdown__footer">
-                                                <a href="#">
-                                                    <i class="zmdi zmdi-power"></i>Logout</a>
+                                                <?php if(!empty($user)): ?>
+                                                    <a href="logout.php">
+                                                        <i class="zmdi zmdi-power"></i>Logout</a>
+                                                <?php endif; ?>
                                             </div>
                                         </div>
                                     </div>
@@ -236,64 +253,37 @@
                                  <h2 class="title-1 m-b-25">Historial Completo</h2>
                                 <!-- DATA TABLE-->
                                 <div class="table-responsive m-b-40">
-                                    <table class="table table-borderless table-data3">
-                                        <thead>
-                                            <tr>
-                                                <th>Fecha</th>
-                                                <th>Peso (kg)</th>
-                                                <th>Nombre</th>
-                                                <th>Estado</th>
-                                                <th>Quilataje</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>2018-09-29 05:57</td>
-                                                <td>1.25</td>
-                                                <td>Oro</td>
-                                                <td class="process">Entrada</td>
-                                                <td>24</td>
-                                            </tr>
-                                            <tr>
-                                                <td>2018-09-28 01:22</td>
-                                                <td>0.95</td>
-                                                <td>Oro</td>
-                                                <td class="process">Entrada</td>
-                                                <td>18</td>
-                                            </tr>
-                                            <tr>
-                                                <td>2018-09-27 02:12</td>
-                                                <td>2.00</td>
-                                                <td>Plata</td>
-                                                <td class="denied">Salida</td>
-                                                <td>12</td>
-                                            </tr>
-                                            <tr>
-                                                <td>2018-09-26 23:06</td>
-                                                <td>1.75</td>
-                                                <td>Platino</td>
-                                                <td class="denied">Salida</td>
-                                                <td>10</td>
-                                            </tr>
-                                            <tr>
-                                                <td>2018-09-25 19:03</td>
-                                                <td>1.50</td>
-                                                <td>Plata</td>
-                                                <td class="process">Entrada</td>
-                                                <td>11.1</td>
-                                            </tr>
+                                        <table class="table table-borderless table-data3">
+                                            <thead>
+                                                <tr>
+                                                    <th>Nombre</th>
+                                                    <th>Quilataje</th>
+                                                    <th>Peso (kg)</th>
+                                                    <th>Fecha</th>
+                                                    <th>Movimiento</th>
+                                                </tr>
+                                            </thead>
+                                            <?php if(isset($resultado)): ?>
+                                            <?php while($row = mysqli_fetch_assoc($resultado) ){
+                                            ?>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><?= $row['name']; ?></td>
+                                                        <td><?= $row['quilataje']; ?></td>
+                                                        <td><?= $row['peso']; ?></td>
+                                                        <td><?= $row['fecha_actualizacion']; ?></td>
+                                                        <td><?= $row['estado']; ?></td>
+                                                    </tr>
+                                                    
+                                                </tbody>
+                                            <?php
+                                                }
+                                            ?>
+                                            <?php endif; ?>
                                             
-                                        </tbody>
-                                    </table>
-                                </div>
+                                        </table>
+                                    </div>
                                 <!-- END DATA TABLE-->
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="copyright">
-                                    <p>Copyright © 2018 Colorlib. All rights reserved. Template by <a href="https://colorlib.com">Colorlib</a>.</p>
-                                </div>
                             </div>
                         </div>
                     </div>

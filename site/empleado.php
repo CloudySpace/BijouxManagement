@@ -1,7 +1,121 @@
+<?php
+  session_start();
+  require 'conexion.php';
+  if (isset($_SESSION['user_id'])) {
+    $records = $conn->prepare('SELECT id, id_perfil, name, username, password, id_Almacen FROM empleado WHERE id = :id');
+    $records->bindParam(':id', $_SESSION['user_id']);
+    $records->execute();
+    $results = $records->fetch(PDO::FETCH_ASSOC);
+    $user = null;
+    $messageUsuario = '';
+    $messageUsername = '';
+    $error = '';
+    if ($results && count($results) > 0) {
+        $user = $results;
+        $busqued = $user['id_Almacen'];
+        $link = mysqli_connect("localhost", "root", "", "joyeria") or die ('Error de conexion: ' . mysqli_error());
+        $resultado = mysqli_query($link,"SELECT * FROM empleado WHERE id_Almacen = '$busqued' and id_perfil = 2");
+        
+        if(!empty($_POST['usuario']) && !empty($_POST['username']) && !empty($_POST['password']) && !empty($_POST['perfil'])){
+            $existe = $conn->prepare('SELECT * FROM empleado WHERE username = :username');
+            $existe->bindParam(':username', $_POST['username']);
+            $existe->execute();
+            $existe = $existe->fetch(PDO::FETCH_ASSOC);
+            $converPerfil = $_POST['perfil'];
+            $a = floatval($converPerfil);
+            if ((!$existe)  && ($a == 1 or $a == 2)){
+                $sql = "INSERT INTO empleado (id_perfil, name, username, password, id_Almacen ) VALUES (:id_perfil, :name, :username, :password, :id_Almacen)"; 
+                $insert = $conn->prepare($sql);
+                $insert->bindParam(':id_perfil', $_POST['perfil']);
+                $insert->bindParam(':name', $_POST['usuario']);
+                $insert->bindParam(':username', $_POST['username']);
+                $insert->bindParam(':password', $_POST['password']);
+                $insert->bindParam(':id_Almacen', $user['id_Almacen']);
+                $insert->execute();
+                header("Location: ../site/actualizar.php");
+            }
+            else{
+                $error = '1';
+            }
+        }
+        else if(!empty($_POST['eliminar']) ){
+            $existe = $conn->prepare('SELECT * FROM empleado WHERE id = :id');
+            $existe->bindParam(':id', $_POST['eliminar']);
+            $existe->execute();
+            $existe = $existe->fetch(PDO::FETCH_ASSOC);
+            if (($existe)  && ($user['id'] != $_POST['eliminar'])){
+                $sql = "DELETE FROM empleado WHERE id = :id"; 
+                $delete = $conn->prepare($sql);
+                $delete->bindParam(':id', $_POST['eliminar']);
+                $delete->execute();
+                header("Location: ../site/actualizar.php");
+            }
+            else{
+                $error = '1';
+            }
+        }
+        else if(!empty($_POST['m_id']) && !empty($_POST['m_usuario']) && !empty($_POST['m_username']) && !empty($_POST['m_password']) && !empty($_POST['m_perfil'])){
+            $existe = $conn->prepare('SELECT * FROM empleado WHERE id = :id');
+            $existe->bindParam(':id', $_POST['m_id']);
+            $existe->execute();
+            $existe = $existe->fetch(PDO::FETCH_ASSOC);
+            if ($existe && count($existe) > 0){
+                $existe = $conn->prepare('SELECT * FROM empleado WHERE username = :username');
+                $existe->bindParam(':username', $_POST['m_username']);
+                $existe->execute();
+                $existe = $existe->fetch(PDO::FETCH_ASSOC);
+                $converPerfil = $_POST['m_perfil'];
+                $a = floatval($converPerfil);
+                if ((!$existe)  && ($a == 1 or $a == 2)){
+                    $sql = "UPDATE empleado SET name = :name, username = :username, password = :password, id_perfil = :id_perfil WHERE id = :id"; 
+                    $update = $conn->prepare($sql);
+                    $update->bindParam(':name', $_POST['m_usuario']);
+                    $update->bindParam(':username', $_POST['m_username']);
+                    $update->bindParam(':password', $_POST['m_password']);
+                    $update->bindParam(':id_perfil', $_POST['m_perfil']);
+                    $update->bindParam(':id', $_POST['m_id']);
+                    $update->execute();
+                    header("Location: ../site/actualizar.php");
+                }
+                else{
+                    $error = '1';
+                }       
+            }
+            else{
+                $error = '1';
+            }
+        }
+    }
+  }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        .alert {
+            padding: 20px;
+            background-color: #f44336;
+            color: white;
+        }
+
+        .closebtn {
+            margin-left: 15px;
+            color: white;
+            font-weight: bold;
+            float: right;
+            font-size: 22px;
+            line-height: 20px;
+            cursor: pointer;    
+            transition: 0.3s;
+        }
+
+        .closebtn:hover {
+            color: black;
+        }
+    </style>
     <!-- Required meta tags-->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -57,7 +171,7 @@
                 <div class="container-fluid">
                     <ul class="navbar-mobile__list list-unstyled">
                         <li class="active has-sub">
-                            <a href="index.html">
+                            <a href="home.php">
                                 <i class="fas fa-tachometer-alt"></i>Overview</a>
                         </li>
                         <li>
@@ -140,7 +254,7 @@
                 <nav class="navbar-sidebar">
                     <ul class="list-unstyled navbar__list">
                         <li>
-                            <a href="index.html">
+                            <a href="home.php">
                                 <i class="fas fa-tachometer-alt"></i>Overview</a>
                         </li>
                         <li>
@@ -172,52 +286,47 @@
                     <div class="container-fluid">
                         <div class="header-wrap">
                             <form class="form-header" action="" method="POST">
-                                <input class="au-input au-input--xl" type="text" name="search" placeholder="Search for datas &amp; reports..." />
-                                <button class="au-btn--submit" type="submit">
-                                    <i class="zmdi zmdi-search"></i>
-                                </button>
+                                
                             </form>
                             <div class="header-button">
 
                                 <div class="account-wrap">
                                     <div class="account-item clearfix js-item-menu">
                                         <div class="image">
-                                            <img src="images/icon/avatar-01.jpg" alt="John Doe" />
+                                            <img src="images/admin.png" alt="Admin" />
                                         </div>
                                         <div class="content">
-                                            <a class="js-acc-btn" href="#">Administrador</a>
+                                            <a class="js-acc-btn"><?= $user['name']; ?></a>
                                         </div>
                                         <div class="account-dropdown js-dropdown">
                                             <div class="info clearfix">
                                                 <div class="image">
-                                                    <a href="#">
-                                                        <img src="images/icon/avatar-01.jpg" alt="John Doe" />
-                                                    </a>
+                                                    <img src="images/admin.png" alt="Admin" />
                                                 </div>
                                                 <div class="content">
                                                     <h5 class="name">
-                                                        <a href="#">john doe</a>
+                                                        <?php if(!empty($user)): ?>
+                                                        <a href="#"><?= $user['name']; ?></a>
+                                                        <?php endif; ?>
                                                     </h5>
-                                                    <span class="email">johndoe@example.com</span>
+                                                    <?php if(!empty($user)): ?>
+                                                        <span class="email"><?= $user['username']; ?></span>
+                                                    <?php endif; ?>
                                                 </div>
                                             </div>
                                             <div class="account-dropdown__body">
                                                 <div class="account-dropdown__item">
-                                                    <a href="#">
-                                                        <i class="zmdi zmdi-account"></i>Account</a>
-                                                </div>
-                                                <div class="account-dropdown__item">
-                                                    <a href="#">
-                                                        <i class="zmdi zmdi-settings"></i>Setting</a>
-                                                </div>
-                                                <div class="account-dropdown__item">
-                                                    <a href="#">
-                                                        <i class="zmdi zmdi-money-box"></i>Billing</a>
+                                                    <?php if(empty($user)): ?>
+                                                    <a href="login.php">
+                                                        <i class="zmdi zmdi-account"></i>Login</a>
+                                                    <?php endif; ?>
                                                 </div>
                                             </div>
                                             <div class="account-dropdown__footer">
-                                                <a href="#">
-                                                    <i class="zmdi zmdi-power"></i>Logout</a>
+                                                <?php if(!empty($user)): ?>
+                                                    <a href="logout.php">
+                                                        <i class="zmdi zmdi-power"></i>Logout</a>
+                                                <?php endif; ?>
                                             </div>
                                         </div>
                                     </div>
@@ -233,6 +342,12 @@
             <div class="main-content">
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
+                        <?php if(!empty($error)): ?>
+                            <div class="alert">
+                              <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+                              <strong>ERROR</strong> Los datos son invalidos.
+                            </div>
+                        <?php endif; ?>
                         <div class="row">
                             <div class="col-lg-9">
                                 <h2 class="title-1 m-b-25">Empleados</h2>
@@ -242,60 +357,26 @@
                                             <tr>
                                                 <th>ID Empleado</th>
                                                 <th>Nombre Empleado</th>
+                                                <th>Username</th>
                                                 <th>Password</th>
                                                 
                                             </tr>
                                         </thead>
+                                        <?php if(isset($resultado)): ?>
+                                            <?php while($row = mysqli_fetch_assoc($resultado)){
+                                        ?>
                                         <tbody>
                                             <tr>
-                                                <td>100036</td>
-                                                <td>Hernesto Catalan</td>
-                                                <td>5421h78ye</td>
-                                                
-                                            </tr>
-                                            <tr>
-                                                <td>100254</td>
-                                                <td>Armando Linares</td>
-                                                <td>51321hyge</td>
-                                                
-                                            </tr>
-                                            <tr>
-                                                <td>100098</td>
-                                                <td>Federico Gutierrez</td>
-                                                <td>opbfhvby878</td>
-                                                
-                                            </tr>
-                                            <tr>
-                                                <td>100589</td>
-                                                <td>Javier Pamplona</td>
-                                                <td>675d06fgj</td>
-                                                
-                                            </tr>
-                                            <tr>
-                                                <td>100789</td>
-                                                <td>Lourdes Hernandez</td>
-                                                <td>256tsd7</td>
-                                                
-                                            </tr>
-                                            <tr>
-                                                <td>100256</td>
-                                                <td>Raul Elizondo</td>
-                                                <td>hyufhrepl02</td>
-                                                
-                                            </tr>
-                                            <tr>
-                                                <td>101063</td>
-                                                <td>Pedro Torquemada</td>
-                                                <td>pojrbbft546</td>
-                                                
-                                            </tr>
-                                            <tr>
-                                                <td>101001</td>
-                                                <td>Manuel Ramirez</td>
-                                                <td>hsayhhd13</td>
-                                                
+                                                <td><?= $row['id'] ?></td>
+                                                <td><?= $row['name'] ?></td>
+                                                <td><?= $row['username'] ?></td>
+                                                <td><?= $row['password'] ?></td>
                                             </tr>
                                         </tbody>
+                                        <?php
+                                            }
+                                        ?>
+                                        <?php endif; ?>
                                     </table>
                                 </div>
                             </div>
@@ -304,36 +385,21 @@
                                 <div class="card">
                                     <div class="card-header">Agregar</div>
                                     <div class="card-body card-block">
-                                        <form action="" method="post" class="">
+                                        <form action="empleado.php" method="post" >
                                             <div class="form-group">
-                                                <div class="input-group">
-                                                    <div class="input-group-addon">Id</div>
-                                                    <input type="text" id="username3" name="username3" class="form-control">
-                                                    <div class="input-group-addon">
-                                                        <i class="fa fa-user"></i>
-                                                    </div>
-                                                </div>
+                                                <input class="au-input au-input--full" type="text" name="usuario" id="user" placeholder="Nombre"> 
                                             </div>
                                             <div class="form-group">
-                                                <div class="input-group">
-                                                    <div class="input-group-addon">Nombre</div>
-                                                    <input type="email" id="email3" name="email3" class="form-control">
-                                                    <div class="input-group-addon">
-                                                        <i class="fa fa-envelope"></i>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                                <input class="au-input au-input--full" type="text" name="username" id="user" placeholder="Username"> 
+                                             </div>
                                             <div class="form-group">
-                                                <div class="input-group">
-                                                    <div class="input-group-addon">Password</div>
-                                                    <input type="password" id="password3" name="password3" class="form-control">
-                                                    <div class="input-group-addon">
-                                                        <i class="fa fa-asterisk"></i>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-actions form-group">
-                                                <button type="submit" class="btn btn-primary btn-sm">Listo</button>
+                                                <input class="au-input au-input--full" type="password3" name="password" id="password3" placeholder="Password"> 
+                                             </div>
+                                            <div class="form-group">
+                                                <input class="au-input au-input--full" type="user" name="perfil" id="user" placeholder="Perfil"> 
+                                             </div>
+                                             <div class="form-actions form-group">
+                                                <button type="submit" class="au-btn au-btn--block au-btn--blue m-b-20">Listo</button>
                                             </div>
                                         </form>
                                     </div>
@@ -343,19 +409,12 @@
                                 <div class="card">
                                     <div class="card-header">Eliminar</div>
                                     <div class="card-body card-block">
-                                        <form action="" method="post" class="">
+                                        <form action="empleado.php" method="post" >
                                             <div class="form-group">
-                                                <div class="input-group">
-                                                    <div class="input-group-addon">Id</div>
-                                                    <input type="text" id="username3" name="username3" class="form-control">
-                                                    <div class="input-group-addon">
-                                                        <i class="fa fa-user"></i>
-                                                    </div>
-                                                </div>
-                                            </div>
-
+                                                <input class="au-input au-input--full" type="text" name="eliminar" id="user" placeholder="ID"> 
+                                             </div>
                                             <div class="form-actions form-group">
-                                                <button type="submit" class="btn btn-secondary btn-sm">Submit</button>
+                                                <button type="submit" class="au-btn au-btn--block au-btn--blue m-b-20">Listo</button>
                                             </div>
                                         </form>
                                     </div>
@@ -365,19 +424,24 @@
                                 <div class="card">
                                     <div class="card-header">Modificar</div>
                                     <div class="card-body card-block">
-                                        <form action="" method="post" class="">
+                                        <form action="empleado.php" method="post" >
                                             <div class="form-group">
-                                                <div class="input-group">
-                                                    <div class="input-group-addon">Id</div>
-                                                    <input type="text" id="username3" name="username3" class="form-control">
-                                                    <div class="input-group-addon">
-                                                        <i class="fa fa-user"></i>
-                                                    </div>
-                                                </div>
+                                                <input class="au-input au-input--full" type="text" name="m_id" id="user" placeholder="ID"> 
+                                             </div>
+                                            <div class="form-group">
+                                                <input class="au-input au-input--full" type="text" name="m_usuario" id="user" placeholder="Nombre"> 
                                             </div>
-
-                                            <div class="form-actions form-group">
-                                                <button type="submit" class="btn btn-success btn-sm">Submit</button>
+                                            <div class="form-group">
+                                                <input class="au-input au-input--full" type="text" name="m_username" id="user" placeholder="Username"> 
+                                             </div>
+                                            <div class="form-group">
+                                                <input class="au-input au-input--full" type="password3" name="m_password" id="password3" placeholder="Password"> 
+                                             </div>
+                                            <div class="form-group">
+                                                <input class="au-input au-input--full" type="user" name="m_perfil" id="user" placeholder="Perfil"> 
+                                             </div>
+                                             <div class="form-actions form-group">
+                                                <button type="submit" class="au-btn au-btn--block au-btn--blue m-b-20">Listo</button>
                                             </div>
                                         </form>
                                     </div>
@@ -387,7 +451,6 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="copyright">
-                                    <p>Copyright © 2018 Colorlib. All rights reserved. Template by <a href="https://colorlib.com">Colorlib</a>.</p>
                                 </div>
                             </div>
                         </div>

@@ -1,7 +1,137 @@
+<?php
+  session_start();
+  require 'conexion.php';
+  if (isset($_SESSION['user_id'])) {
+    $records = $conn->prepare('SELECT id, id_perfil, name, username, password, id_Almacen FROM empleado WHERE id = :id');
+    $records->bindParam(':id', $_SESSION['user_id']);
+    $records->execute();
+    $results = $records->fetch(PDO::FETCH_ASSOC);
+    $user = null;
+    $messageUsuario = '';
+    $messageUsername = '';
+    $messageInsert = '';
+    if ($results && count($results) > 0) {
+        $user = $results;
+        if (!empty($_POST['material_e']) && !empty($_POST['quilataje_e']) && !empty($_POST['peso_e'])) {
+            $validar_e = $conn->prepare('SELECT * FROM material WHERE name = :name and quilataje = :quilataje and id_Almacen = :id_Almacen');
+            $validar_e->bindParam(':name', $_POST['material_e']);
+            $validar_e->bindParam(':quilataje', $_POST['quilataje_e']);
+            $id_Almacen = $user['id_Almacen'];
+            $validar_e->bindParam(':id_Almacen', $id_Almacen);
+            $validar_e->execute();
+            $r_validar = $validar_e->fetch(PDO::FETCH_ASSOC);
+            if ($r_validar && count($r_validar) > 0){
+                $insert = $conn->prepare('UPDATE material SET peso = peso + :peso_e WHERE name = :name and quilataje = :quilataje and id_Almacen = :id_Almacen');
+                $insert->bindParam(':peso_e', $_POST['peso_e']);
+                $insert->bindParam(':name', $_POST['material_e']);
+                $insert->bindParam(':quilataje', $_POST['quilataje_e']);
+                $id_Almacen = $user['id_Almacen'];
+                $insert->bindParam(':id_Almacen', $id_Almacen);
+                $insert->execute();
+                
+                $insert = $conn->prepare('SELECT id, peso FROM material WHERE name = :name and quilataje = :quilataje and id_Almacen = :id_Almacen');
+                $insert->bindParam(':name', $_POST['material_e']);
+                $insert->bindParam(':quilataje', $_POST['quilataje_e']);
+                $id_Almacen = $user['id_Almacen'];
+                $insert->bindParam(':id_Almacen', $id_Almacen);
+                $insert->execute();
+                $id_empleado = $user['id']; 
+                $getId = $insert->fetch(PDO::FETCH_ASSOC);
+                $id_material = $getId['id'];
+                $sql = "INSERT INTO registro (id_empleado, id_material, peso, fecha_actualizacion, estado, id_Almacen) VALUES (:id_empleado, :id_material, :peso, NOW(), 'ENTRADA', :id_Almacen)";
+                $insert = $conn->prepare($sql);
+                $insert->bindParam(':id_empleado', $id_empleado);
+                $insert->bindParam(':id_material', $id_material);
+                $insert->bindParam(':peso', $_POST['peso_e']);
+                $insert->bindParam(':id_Almacen', $id_Almacen);
+                $insert->execute();
+            }
+            else{
+                $messageInsert = 'Los datos ingresados son incorrectos';
+            }
+        }
+        else if(!empty($_POST['material_s']) && !empty($_POST['quilataje_s']) && !empty($_POST['peso_s'])){
+            $validar_e = $conn->prepare('SELECT * FROM material WHERE name = :name and quilataje = :quilataje and id_Almacen = :id_Almacen');
+            $validar_e->bindParam(':name', $_POST['material_s']);
+            $validar_e->bindParam(':quilataje', $_POST['quilataje_s']);
+            $id_Almacen = $user['id_Almacen'];
+            $validar_e->bindParam(':id_Almacen', $id_Almacen);
+            $validar_e->execute();
+            $r_validar = $validar_e->fetch(PDO::FETCH_ASSOC);
+            $converPost = $_POST['peso_s'];
+            $convertPeso = $r_validar['peso'];
+            $a = floatval($converPost);
+            $b = floatval($convertPeso);
+            if ($r_validar && count($r_validar) > 0 and $a <= $b ){
+                $insert = $conn->prepare('UPDATE material SET peso = peso - :peso_s WHERE name = :name and quilataje = :quilataje and id_Almacen = :id_Almacen');
+                $insert->bindParam(':peso_s', $_POST['peso_s']);
+                $insert->bindParam(':name', $_POST['material_s']);
+                $insert->bindParam(':quilataje', $_POST['quilataje_s']);
+                $id_Almacen = $user['id_Almacen'];
+                $insert->bindParam(':id_Almacen', $id_Almacen);
+                $insert->execute();
+                
+                $insert = $conn->prepare('SELECT id, peso FROM material WHERE name = :name and quilataje = :quilataje and id_Almacen = :id_Almacen');
+                $insert->bindParam(':name', $_POST['material_s']);
+                $insert->bindParam(':quilataje', $_POST['quilataje_s']);
+                $id_Almacen = $user['id_Almacen'];
+                $insert->bindParam(':id_Almacen', $id_Almacen);
+                $insert->execute();
+                $id_empleado = $user['id']; 
+                $getId = $insert->fetch(PDO::FETCH_ASSOC);
+                $id_material = $getId['id'];
+                $sql = "INSERT INTO registro (id_empleado, id_material, peso, fecha_actualizacion, estado, id_Almacen) VALUES (:id_empleado, :id_material, :peso, NOW(), 'SALIDA', :id_Almacen)";
+                $insert = $conn->prepare($sql);
+                $insert->bindParam(':id_empleado', $id_empleado);
+                $insert->bindParam(':id_material', $id_material);
+                $insert->bindParam(':peso', $_POST['peso_s']);
+                $insert->bindParam(':id_Almacen', $id_Almacen);
+                $insert->execute();
+            }
+            else{
+                $messageInsert = 'Los datos ingresados son incorrectos';
+            }
+        }
+        else{
+            if(!empty($_POST['material_s'])  ){
+                $messageInsert = 'Los datos ingresados son incorrectos';
+            }
+            elseif(!empty($_POST['material_e']) ){
+                $messageInsert = 'Los datos ingresados son incorrectos';
+            } 
+        }
+    }
+  }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        .alert {
+            padding: 20px;
+            background-color: #f44336;
+            color: white;
+        }
+
+        .closebtn {
+            margin-left: 15px;
+            color: white;
+            font-weight: bold;
+            float: right;
+            font-size: 22px;
+            line-height: 20px;
+            cursor: pointer;    
+            transition: 0.3s;
+        }
+
+        .closebtn:hover {
+            color: black;
+        }
+    </style>
+    
     <!-- Required meta tags-->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -58,19 +188,15 @@
                     <ul class="navbar-mobile__list list-unstyled">
                         <li class="has-sub">
                         <li class="active has-sub">
-                            <a href="index.html">
+                            <a href="homeEmpleado.php">
                                 <i class="fas fa-tachometer-alt"></i>Overview</a>
                         </li>
                         <li>
-                            <a href="material.php">
+                            <a href="materialEmpleado.php">
                                 <i class="fas fa-table"></i>Materiales</a>
                         </li>
                         <li>
-                            <a href="empleado.php">
-                                <i class="far fa-check-square"></i>Empleados</a>
-                        </li>
-                        <li>
-                            <a href="form.html">
+                            <a href="historialEmpleado.php">
                                 <i class="fas fa-book"></i>Historial</a>
                         </li>
                         <li class="has-sub">
@@ -144,7 +270,7 @@
                 <nav class="navbar-sidebar">
                     <ul class="list-unstyled navbar__list">
                         <li>
-                            <a href="indexEmpleado.html">
+                            <a href="homeEmpleado.php">
                                 <i class="fas fa-tachometer-alt"></i>Overview</a>
                         </li>
                         <li class="active has-sub">
@@ -173,52 +299,49 @@
                     <div class="container-fluid">
                         <div class="header-wrap">
                             <form class="form-header" action="" method="POST">
-                                <input class="au-input au-input--xl" type="text" name="search" placeholder="Search for datas &amp; reports..." />
-                                <button class="au-btn--submit" type="submit">
-                                    <i class="zmdi zmdi-search"></i>
-                                </button>
+                                
                             </form>
                             <div class="header-button">
 
                                 <div class="account-wrap">
                                     <div class="account-item clearfix js-item-menu">
                                         <div class="image">
-                                            <img src="images/icon/avatar-01.jpg" alt="John Doe" />
+                                            <img src="images/user.png" alt="User" />
                                         </div>
                                         <div class="content">
-                                            <a class="js-acc-btn" href="#">Empleado</a>
+                                             <a class="js-acc-btn"><?= $user['name']; ?></a>
                                         </div>
                                         <div class="account-dropdown js-dropdown">
                                             <div class="info clearfix">
                                                 <div class="image">
                                                     <a href="#">
-                                                        <img src="images/icon/avatar-01.jpg" alt="John Doe" />
+                                                        <img src="images/user.png" alt="User" />
                                                     </a>
                                                 </div>
                                                 <div class="content">
                                                     <h5 class="name">
-                                                        <a href="#">john doe</a>
+                                                        <?php if(!empty($user)): ?>
+                                                        <a href="#"><?= $user['name']; ?></a>
+                                                        <?php endif; ?>
                                                     </h5>
-                                                    <span class="email">johndoe@example.com</span>
+                                                    <?php if(!empty($user)): ?>
+                                                        <span class="email"><?= $user['username']; ?></span>
+                                                    <?php endif; ?>
                                                 </div>
                                             </div>
                                             <div class="account-dropdown__body">
                                                 <div class="account-dropdown__item">
-                                                    <a href="#">
-                                                        <i class="zmdi zmdi-account"></i>Account</a>
-                                                </div>
-                                                <div class="account-dropdown__item">
-                                                    <a href="#">
-                                                        <i class="zmdi zmdi-settings"></i>Setting</a>
-                                                </div>
-                                                <div class="account-dropdown__item">
-                                                    <a href="#">
-                                                        <i class="zmdi zmdi-money-box"></i>Billing</a>
+                                                    <?php if(empty($user)): ?>
+                                                    <a href="login.php">
+                                                        <i class="zmdi zmdi-account"></i>Login</a>
+                                                    <?php endif; ?>
                                                 </div>
                                             </div>
                                             <div class="account-dropdown__footer">
-                                                <a href="#">
-                                                    <i class="zmdi zmdi-power"></i>Logout</a>
+                                                <?php if(!empty($user)): ?>
+                                                    <a href="logout.php">
+                                                        <i class="zmdi zmdi-power"></i>Logout</a>
+                                                <?php endif; ?>
                                             </div>
                                         </div>
                                     </div>
@@ -234,52 +357,30 @@
             <div class="main-content">
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
-
+                        <?php if(!empty($messageInsert)): ?>
+                            <div class="alert">
+                              <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+                              <strong>ERROR</strong> Los datos son invalidos.
+                            </div>
+                        <?php endif; ?>
                         <div class="row m-t-30">
                                 <div class="col-lg-6">
                                       <h2 class="title-1 m-b-25">Ingresa material</h2>
                                         <div class="card">
                                             <div class="card-header">Entrada</div>
                                             <div class="card-body card-block">
-                                                <form action="" method="post" class="">
-                                                        <div class="form-group">
-                                                                <div class="input-group">
-                                                                    <div class="input-group-addon">Id</div>
-                                                                    <input type="password" id="password3" name="password3" class="form-control">
-                                                                    <div class="input-group-addon">
-                                                                        <i class="fa fa-asterisk"></i>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+                                                <form action="materialEmpleado.php" method="post">
                                                     <div class="form-group">
-                                                            <div class="input-group">
-                                                                <div class="input-group-addon">Nombre</div>
-                                                                <input type="password" id="password3" name="password3" class="form-control">
-                                                                <div class="input-group-addon">
-                                                                    <i class="fa fa-asterisk"></i>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    <div class="form-group">
-                                                        <div class="input-group">
-                                                            <div class="input-group-addon">Quilataje</div>
-                                                            <input type="password" id="password3" name="password3" class="form-control">
-                                                            <div class="input-group-addon">
-                                                                <i class="fa fa-asterisk"></i>
-                                                            </div>
-                                                        </div>
+                                                       <input class="au-input au-input--full" type="text" name="material_e" id="user" placeholder="Material"> 
                                                     </div>
                                                     <div class="form-group">
-                                                            <div class="input-group">
-                                                                <div class="input-group-addon">Peso</div>
-                                                                <input type="password" id="password3" name="password3" class="form-control">
-                                                                <div class="input-group-addon">
-                                                                    <i class="fa fa-asterisk"></i>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                        <input class="au-input au-input--full" type="text" name="quilataje_e" id="user" placeholder="Quilataje">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input class="au-input au-input--full" type="text" name="peso_e" id="user" placeholder="Peso">
+                                                    </div>
                                                     <div class="form-actions form-group">
-                                                        <button type="submit" class="btn btn-primary btn-sm">Listo</button>
+                                                        <button type="submit" class="au-btn au-btn--block au-btn--blue m-b-20">Listo</button>
                                                     </div>
                                                 </form>
                                             </div>
@@ -290,57 +391,23 @@
                                             <div class="card">
                                                 <div class="card-header">Salida</div>
                                                 <div class="card-body card-block">
-                                                    <form action="" method="post" class="">
-                                                            <div class="form-group">
-                                                                    <div class="input-group">
-                                                                        <div class="input-group-addon">Id</div>
-                                                                        <input type="password" id="password3" name="password3" class="form-control">
-                                                                        <div class="input-group-addon">
-                                                                            <i class="fa fa-asterisk"></i>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                        <div class="input-group">
-                                                                            <div class="input-group-addon">Nombre</div>
-                                                                            <input type="password" id="password3" name="password3" class="form-control">
-                                                                            <div class="input-group-addon">
-                                                                                <i class="fa fa-asterisk"></i>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="form-group">
-                                                                            <div class="input-group">
-                                                                                <div class="input-group-addon">Quilataje</div>
-                                                                                <input type="password" id="password3" name="password3" class="form-control">
-                                                                                <div class="input-group-addon">
-                                                                                    <i class="fa fa-asterisk"></i>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="form-group">
-                                                                                <div class="input-group">
-                                                                                    <div class="input-group-addon">Peso</div>
-                                                                                    <input type="password" id="password3" name="password3" class="form-control">
-                                                                                    <div class="input-group-addon">
-                                                                                        <i class="fa fa-asterisk"></i>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                        <div class="form-actions form-group">
-                                                            <button type="submit" class="btn btn-primary btn-sm">Listo</button>
+                                                <form action="materialEmpleado.php" method="post" >
+                                                    <div class="form-group">
+                                                        <input class="au-input au-input--full" type="text" name="material_s" id="user" placeholder="Material">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input class="au-input au-input--full" type="text" name="quilataje_s" id="user" placeholder="Quilataje">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input class="au-input au-input--full" type="text" name="peso_s" id="user" placeholder="Peso">
+                                                    </div>
+                                                    <div class="form-actions form-group">
+                                                        <button type="submit" class="au-btn au-btn--block au-btn--blue m-b-20">Listo</button>
                                                         </div>
                                                     </form>
                                                 </div>
                                             </div>
                                         </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="copyright">
-                                    <p>Copyright © 2018 Colorlib. All rights reserved. Template by <a href="https://colorlib.com">Colorlib</a>.</p>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>

@@ -144,7 +144,8 @@ CREATE TABLE IF NOT EXISTS `registro` (
   `id_material` int(11) NOT NULL,
   `peso` int(11) NOT NULL,
   `fecha_actualizacion` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `id_Almacen` int(11) NOT NULL,
+  `estado` varchar(20) COLLATE utf8_spanish_ci NOT NULL, 
+  `id_Almacen` int(11) NOT NULL,  
   PRIMARY KEY (`id`),
   KEY `FK_idAlmacenRegistro` (`id_Almacen`),
   KEY `fk_empleado_registro` (`id_empleado`),
@@ -155,8 +156,7 @@ CREATE TABLE IF NOT EXISTS `registro` (
 -- Dumping data for table `registro`
 --
 
-INSERT INTO `registro` (`id`, `id_empleado`, `id_material`, `peso`, `fecha_actualizacion`, `id_Almacen`) VALUES
-(1, 2, 1, 50, '2018-11-06 19:54:55', 1);
+INSERT INTO `registro` (`id`, `id_empleado`, `id_material`, `peso`, `fecha_actualizacion`,`estado`, `id_Almacen`) VALUES (1, 2, 1, 50, '2018-11-06 19:54:55','ENTRADA', 1);
 
 --
 -- Constraints for dumped tables

@@ -13,7 +13,7 @@
         $user = $results;
         $busqued = $_SESSION['user_id'];
         $link = mysqli_connect("localhost", "root", "", "joyeria") or die ('Error de conexion: ' . mysqli_error());
-        $resultado = mysqli_query($link,"select material.name, material.quilataje, registro.peso, registro.fecha_ingreso,   registro.fecha_modificacion from material,registro WHERE registro.id_empleado = '$busqued' and material.id =         registro.id_material ORDER BY registro.fecha_ingreso DESC");
+        $resultado = mysqli_query($link,"select material.name, material.quilataje, registro.peso, registro.fecha_actualizacion, registro.estado from material,registro WHERE registro.id_empleado = '$busqued' and material.id = registro.id_material ORDER BY registro.fecha_actualizacion DESC");
     }
   }
 ?>
@@ -77,7 +77,7 @@
                 <div class="container-fluid">
                     <ul class="navbar-mobile__list list-unstyled">
                         <li class="active has-sub">
-                            <a href="indexEmpleado.html">
+                            <a href="homeEmpleado.php">
                                 <i class="fas fa-tachometer-alt"></i>Overview</a>
                         </li>
                         <li>
@@ -160,7 +160,7 @@
                 <nav class="navbar-sidebar">
                     <ul class="list-unstyled navbar__list">
                         <li class="active has-sub">
-                            <a href="indexEmpleado.php">
+                            <a href="homeEmpleado.php">
                                 <i class="fas fa-tachometer-alt"></i>Overview</a>
                         </li>
                         <li>
@@ -189,10 +189,7 @@
                     <div class="container-fluid">
                         <div class="header-wrap">
                             <form class="form-header" action="" method="POST">
-                                <input class="au-input au-input--xl" type="text" name="search" placeholder="Search for datas &amp; reports..." />
-                                <button class="au-btn--submit" type="submit">
-                                    <i class="zmdi zmdi-search"></i>
-                                </button>
+                                
                             </form>
                             <div class="header-button">
 
@@ -202,7 +199,7 @@
                                             <img src="images/user.png" alt="User" />
                                         </div>
                                         <div class="content">
-                                            <a class="js-acc-btn" href="#">Empleado</a>
+                                             <a class="js-acc-btn"><?= $user['name']; ?></a>
                                         </div>
                                         <div class="account-dropdown js-dropdown">
                                             <div class="info clearfix">
@@ -271,7 +268,7 @@
                                                     <th>Nombre</th>
                                                     <th>Quilataje</th>
                                                     <th>Peso (kg)</th>
-                                                    <th>Fecha Ingreso</th>
+                                                    <th>Fecha</th>
                                                     <th>Movimiento</th>
                                                 </tr>
                                             </thead>
@@ -284,8 +281,8 @@
                                                         <td><?= $row['name']; ?></td>
                                                         <td><?= $row['quilataje']; ?></td>
                                                         <td><?= $row['peso']; ?></td>
-                                                        <td><?= $row['fecha_ingreso']; ?></td>
-                                                        <td><?= $row['fecha_modificacion']; ?></td>
+                                                        <td><?= $row['fecha_actualizacion']; ?></td>
+                                                        <td><?= $row['estado']; ?></td>
                                                     </tr>
                                                     
                                                 </tbody>
@@ -301,13 +298,6 @@
                             </div>
                         </div>
 
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="copyright">
-                                    <p>Copyright © 2018 Colorlib. All rights reserved. Template by <a href="https://colorlib.com">Colorlib</a>.</p>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>

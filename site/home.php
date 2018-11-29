@@ -2,7 +2,7 @@
   session_start();
   require 'conexion.php';
   if (isset($_SESSION['user_id'])) {
-    $records = $conn->prepare('SELECT id, id_perfil, name, username, password FROM empleado WHERE id = :id');
+    $records = $conn->prepare('SELECT id, id_perfil, name, username, password, id_Almacen FROM empleado WHERE id = :id');
     $records->bindParam(':id', $_SESSION['user_id']);
     $records->execute();
     $results = $records->fetch(PDO::FETCH_ASSOC);
@@ -10,7 +10,12 @@
     $messageUsuario = '';
     $messageUsername = '';
     if ($results && count($results) > 0) {
-      $user = $results;
+        $user = $results;
+        $busqued = $user['id_Almacen'];
+        $link = mysqli_connect("localhost", "root", "", "joyeria") or die ('Error de conexion: ' . mysqli_error());
+        $resultado = mysqli_query($link,"SELECT registro.fecha_actualizacion, empleado.name as nombre, material.name, registro.peso, material.quilataje, registro.estado FROM material,registro,empleado WHERE registro.id_Almacen = '$busqued' and material.id_Almacen = '$busqued' and empleado.id_Almacen = '$busqued' and material.id = registro.id_material and empleado.id = registro.id_empleado ORDER BY registro.fecha_actualizacion DESC");
+        
+        $getTrabajadores = mysqli_query($link,"SELECT name FROM empleado WHERE id_Almacen = '$busqued' and id_perfil = 2");
     }
   }
 ?>
@@ -192,10 +197,7 @@
                     <div class="container-fluid">
                         <div class="header-wrap">
                             <form class="form-header" action="" method="POST">
-                                <input class="au-input au-input--xl" type="text" name="search" placeholder="Search for datas &amp; reports..." />
-                                <button class="au-btn--submit" type="submit">
-                                    <i class="zmdi zmdi-search"></i>
-                                </button>
+                                
                             </form>
                             <div class="header-button">
 
@@ -269,97 +271,32 @@
                                         <thead>
                                             <tr>
                                                 <th>Fecha</th>
-                                                <th>ID Empleado</th>
                                                 <th>Nombre Empleado</th>
-                                                <th class="text-right">ID Material</th>
                                                 <th class="text-right">Nombre Material</th>
                                                 <th class="text-right">Peso</th>
                                                 <th class="text-right">Quilataje</th>
                                                 <th class="text-right">Estado</th>
                                             </tr>
                                         </thead>
+                                        <?php if(isset($resultado)): ?>
+                                            <?php $cont = 0; ?>
+                                            <?php while($row = mysqli_fetch_assoc($resultado) and $cont < 10){
+                                        ?>
                                         <tbody>
                                             <tr>
-                                                <td>2018-09-29 05:57</td>
-                                                <td>100398</td>
-                                                <td>Jonathan Avila</td>
-                                                <td class="text-right">313</td>
-                                                <td class="text-right">Plata</td>
-                                                <td class="text-right">1.25</td>
-                                                <td class="text-right">12</td>
-                                                <td class="text-right">Entrada</td>
-                                            </tr>
-                                            <tr>
-                                                <td>2018-09-28 01:22</td>
-                                                <td>100397</td>
-                                                <td>Carlos Torres</td>
-                                                <td class="text-right">925</td>
-                                                <td class="text-right">Oro</td>
-                                                <td class="text-right">2.00</td>
-                                                <td class="text-right">14</td>
-                                                <td class="text-right">Entrada</td>
-                                            </tr>
-                                            <tr>
-                                                <td>2018-09-27 02:12</td>
-                                                <td>100396</td>
-                                                <td>Luisa Flores</td>
-                                                <td class="text-right">115</td>
-                                                <td class="text-right">Platino</td>
-                                                <td class="text-right">1.50</td>
-                                                <td class="text-right">10</td>
-                                                <td class="text-right">Salida</td>
-                                            </tr>
-                                            <tr>
-                                                <td>2018-09-26 23:06</td>
-                                                <td>100395</td>
-                                                <td>Pedro Paramo</td>
-                                                <td class="text-right">738</td>
-                                                <td class="text-right">Diamante</td>
-                                                <td class="text-right">0.05</td>
-                                                <td class="text-right">5</td>
-                                                <td class="text-right">Entrada</td>
-                                            </tr>
-                                            <tr>
-                                                <td>2018-09-25 19:03</td>
-                                                <td>100393</td>
-                                                <td>Juan Rulfo</td>
-                                                <td class="text-right">738</td>
-                                                <td class="text-right">Diamante</td>
-                                                <td class="text-right">0.02</td>
-                                                <td class="text-right">2</td>
-                                                <td class="text-right">Entrada</td>
-                                            </tr>
-                                            <tr>
-                                                <td>2018-09-29 05:57</td>
-                                                <td>100392</td>
-                                                <td>Humberto Suarez</td>
-                                                <td class="text-right">925</td>
-                                                <td class="text-right">Oro</td>
-                                                <td class="text-right">2.25</td>
-                                                <td class="text-right">24</td>
-                                                <td class="text-right">Salida</td>
-                                            </tr>
-                                            <tr>
-                                                <td>2018-09-24 19:10</td>
-                                                <td>100391</td>
-                                                <td>Carolina Moreno</td>
-                                                <td class="text-right">313</td>
-                                                <td class="text-right">Plata</td>
-                                                <td class="text-right">0.78</td>
-                                                <td class="text-right">12</td>
-                                                <td class="text-right">Salida</td>
-                                            </tr>
-                                            <tr>
-                                                <td>2018-09-22 00:43</td>
-                                                <td>100393</td>
-                                                <td>Anahi Ruvalcaba</td>
-                                                <td class="text-right">313</td>
-                                                <td class="text-right">Plata</td>
-                                                <td class="text-right">0.98</td>
-                                                <td class="text-right">12</td>
-                                                <td class="text-right">Entrada</td>
+                                                <td><?= $row['fecha_actualizacion'] ?></td>
+                                                <td><?= $row['nombre'] ?></td>
+                                                <td><?= $row['name'] ?></td>
+                                                <td class="text-right"><?= $row['peso'] ?></td>
+                                                <td class="text-right"><?= $row['quilataje'] ?></td>
+                                                <td class="text-right"><?= $row['estado'] ?></td>
                                             </tr>
                                         </tbody>
+                                        <?php
+                                            $cont = $cont + 1;
+                                            }
+                                        ?>
+                                        <?php endif; ?>
                                     </table>
                                 </div>
                             </div>
@@ -369,40 +306,20 @@
                                     <div class="au-card-inner">
                                         <div class="table-responsive">
                                             <table class="table table-top-countries">
+                                                <?php if(isset($getTrabajadores)): ?>
+                                                    <?php $cont = 0; ?>
+                                                    <?php while($row = mysqli_fetch_assoc($getTrabajadores) and $cont < 10){
+                                                ?>
                                                 <tbody>
                                                     <tr>
-                                                        <td>Javier Lopez</td>
-                                                        <td class="text-right">9083</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Miguel Hernandez</td>
-                                                        <td class="text-right">9082</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Hernan Costa</td>
-                                                        <td class="text-right">9081</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Kenny Gomez</td>
-                                                        <td class="text-right">9080</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Laura Hurtado</td>
-                                                        <td class="text-right">9079</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Karla Juarez</td>
-                                                        <td class="text-right">9078</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Luis Lopez</td>
-                                                        <td class="text-right">9077</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Humberto Sanchez</td>
-                                                        <td class="text-right">9076</td>
+                                                        <td><?= $row['name'] ?></td>
                                                     </tr>
                                                 </tbody>
+                                                <?php
+                                                    $cont = $cont + 1;
+                                                    }
+                                                ?>
+                                                <?php endif; ?>
                                             </table>
                                         </div>
                                     </div>
@@ -413,7 +330,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="copyright">
-                                    <p>Copyright © 2018 Colorlib. All rights reserved. Template by <a href="https://colorlib.com">Colorlib</a>.</p>
+                                   
                                 </div>
                             </div>
                         </div>

@@ -57,98 +57,6 @@
 
 <body class="animsition">
     <div class="page-wrapper">
-        <!-- HEADER MOBILE-->
-        <header class="header-mobile d-block d-lg-none">
-            <div class="header-mobile__bar">
-                <div class="container-fluid">
-                    <div class="header-mobile-inner">
-                        <a class="logo" href="indexEmpleado.html">
-                            <img src="images/icon/logo.png" alt="CoolAdmin" />
-                        </a>
-                        <button class="hamburger hamburger--slider" type="button">
-                            <span class="hamburger-box">
-                                <span class="hamburger-inner"></span>
-                            </span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <nav class="navbar-mobile">
-                <div class="container-fluid">
-                    <ul class="navbar-mobile__list list-unstyled">
-                        <li class="has-sub">
-                        <li class="active has-sub">
-                            <a href="home.php">
-                                <i class="fas fa-tachometer-alt"></i>Overview</a>
-                        </li>
-                        <li>
-                            <a href="materialEmpleado.php">
-                                <i class="fas fa-table"></i>Materiales</a>
-                        </li>
-                        <li>
-                            <a href="historialEmpleado.php">
-                                <i class="fas fa-book"></i>Historial</a>
-                        </li>
-                        <li class="has-sub">
-                            <a class="js-arrow" href="#">
-                                <i class="fas fa-copy"></i>Pages</a>
-                            <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
-                                <li>
-                                    <a href="login.html">Login</a>
-                                </li>
-                                <li>
-                                    <a href="register.html">Register</a>
-                                </li>
-                                <li>
-                                    <a href="forget-pass.html">Forget Password</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="has-sub">
-                            <a class="js-arrow" href="#">
-                                <i class="fas fa-desktop"></i>UI Elements</a>
-                            <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
-                                <li>
-                                    <a href="button.html">Button</a>
-                                </li>
-                                <li>
-                                    <a href="badge.html">Badges</a>
-                                </li>
-                                <li>
-                                    <a href="tab.html">Tabs</a>
-                                </li>
-                                <li>
-                                    <a href="card.html">Cards</a>
-                                </li>
-                                <li>
-                                    <a href="alert.html">Alerts</a>
-                                </li>
-                                <li>
-                                    <a href="progress-bar.html">Progress Bars</a>
-                                </li>
-                                <li>
-                                    <a href="modal.html">Modals</a>
-                                </li>
-                                <li>
-                                    <a href="switch.html">Switchs</a>
-                                </li>
-                                <li>
-                                    <a href="grid.php">Grids</a>
-                                </li>
-                                <li>
-                                    <a href="fontawesome.html">Fontawesome Icon</a>
-                                </li>
-                                <li>
-                                    <a href="typo.html">Typography</a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-        </header>
-        <!-- END HEADER MOBILE-->
-
         <!-- MENU SIDEBAR-->
         <aside class="menu-sidebar d-none d-lg-block">
             <div class="logo">
@@ -159,24 +67,25 @@
             <div class="menu-sidebar__content js-scrollbar1">
                 <nav class="navbar-sidebar">
                     <ul class="list-unstyled navbar__list">
-                            <li>
-                                    <a href="home.php">
-                                        <i class="fas fa-tachometer-alt"></i>Overview</a>
-                                </li>
-                                <li>
-                                    <a href="material.php">
-                                        <i class="fas fa-table"></i>Materiales</a>
-                                </li>
-                                <li>
-                                    <a href="empleado.php">
-                                        <i class="far fa-check-square"></i>Empleados</a>
-                                </li>
-                                <li class="active has-sub">
-                                        <a href="historial.php">
-                                            <i class="far fa-check-square"></i>Historial</a>
-                                </li>
-                        
-                            </ul>
+                        <li>
+                            <a href="home.php">
+                                <i class="fas fa-tachometer-alt"></i>Overview</a>
+                        </li>
+                        <li>
+                            <a href="material.php">
+                                <i class="fas fa-table"></i>Materiales</a>
+                        </li>
+                        <li>
+                            <a href="empleado.php">
+                                <i class="far fa-check-square"></i>Empleados</a>
+                        </li>
+                        <li class="active has-sub">
+                            <a href="historial.php">
+                                <i class="fas fa-archive"></i>Historial</a>
+                        </li>
+                        <li>
+                            <a href="buscar.php">
+                                <i class="fas fa-search"></i>Buscar en Historial</a>
                         </li>
                     </ul>
                 </nav>
@@ -192,7 +101,7 @@
                     <div class="container-fluid">
                         <div class="header-wrap">
                             <form class="form-header" action="" method="POST">
-                                
+
                             </form>
                             <div class="header-button">
 
@@ -202,7 +111,8 @@
                                             <img src="images/admin.png" alt="Admin" />
                                         </div>
                                         <div class="content">
-                                            <a class="js-acc-btn"><?= $user['name']; ?></a>
+                                            <a class="js-acc-btn">
+                                                <?= $user['name']; ?></a>
                                         </div>
                                         <div class="account-dropdown js-dropdown">
                                             <div class="info clearfix">
@@ -212,11 +122,13 @@
                                                 <div class="content">
                                                     <h5 class="name">
                                                         <?php if(!empty($user)): ?>
-                                                        <a href="#"><?= $user['name']; ?></a>
+                                                        <a href="#">
+                                                            <?= $user['name']; ?></a>
                                                         <?php endif; ?>
                                                     </h5>
                                                     <?php if(!empty($user)): ?>
-                                                        <span class="email"><?= $user['username']; ?></span>
+                                                    <span class="email">
+                                                        <?= $user['username']; ?></span>
                                                     <?php endif; ?>
                                                 </div>
                                             </div>
@@ -230,8 +142,8 @@
                                             </div>
                                             <div class="account-dropdown__footer">
                                                 <?php if(!empty($user)): ?>
-                                                    <a href="logout.php">
-                                                        <i class="zmdi zmdi-power"></i>Logout</a>
+                                                <a href="logout.php">
+                                                    <i class="zmdi zmdi-power"></i>Logout</a>
                                                 <?php endif; ?>
                                             </div>
                                         </div>
@@ -250,81 +162,97 @@
                     <div class="container-fluid">
 
                         <div class="row m-t-30">
-                                <div class="col-md-12">
-                                        <h2 class="title-1 m-b-25">Materiales Recientes</h2>
-                                        <div class="table-responsive table--no-card m-b-40">
-                                            <table class="table table-borderless table-striped table-earning">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Fecha</th>
-                                                        <th>ID Empleado</th>
-                                                        <th>Nombre Empleado</th>
-                                                        <th class="text-right">ID Material</th>
-                                                        <th class="text-right">Nombre Material</th>
-                                                        <th class="text-right">Peso</th>
-                                                        <th class="text-right">Quilataje</th>
-                                                        <th class="text-right">Estado</th>
-                                                    </tr>
-                                                </thead>
-                                                <?php if(isset($resultado)): ?>
-                                                    <?php while($row = mysqli_fetch_assoc($resultado)){
+                            <div class="col-md-12">
+                                <h2 class="title-1 m-b-25">Materiales Recientes</h2>
+                                <div class="table-responsive table--no-card m-b-40">
+                                    <table class="table table-borderless table-striped table-earning">
+                                        <thead>
+                                            <tr>
+                                                <th>Fecha</th>
+                                                <th>ID Empleado</th>
+                                                <th>Nombre Empleado</th>
+                                                <th class="text-right">ID Material</th>
+                                                <th class="text-right">Nombre Material</th>
+                                                <th class="text-right">Peso</th>
+                                                <th class="text-right">Quilataje</th>
+                                                <th class="text-right">Estado</th>
+                                            </tr>
+                                        </thead>
+                                        <?php if(isset($resultado)): ?>
+                                        <?php while($row = mysqli_fetch_assoc($resultado)){
                                                 ?>
-                                                <tbody>
-                                                    <tr>
-                                                        <td><?= $row['fecha_actualizacion'] ?></td>
-                                                        <td><?= $row['id_empleado'] ?></td>
-                                                        <td><?= $row['nombre'] ?></td>
-                                                        <td><?= $row['id_material'] ?></td>
-                                                        <td><?= $row['name'] ?></td>
-                                                        <td class="text-right"><?= $row['peso'] ?></td>
-                                                        <td class="text-right"><?= $row['quilataje'] ?></td>
-                                                        <td class="text-right"><?= $row['estado'] ?></td>
-                                                    </tr>
-                                                </tbody>
-                                                <?php
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <?= $row['fecha_actualizacion'] ?>
+                                                </td>
+                                                <td>
+                                                    <?= $row['id_empleado'] ?>
+                                                </td>
+                                                <td>
+                                                    <?= $row['nombre'] ?>
+                                                </td>
+                                                <td>
+                                                    <?= $row['id_material'] ?>
+                                                </td>
+                                                <td>
+                                                    <?= $row['name'] ?>
+                                                </td>
+                                                <td class="text-right">
+                                                    <?= $row['peso'] ?>
+                                                </td>
+                                                <td class="text-right">
+                                                    <?= $row['quilataje'] ?>
+                                                </td>
+                                                <td class="text-right">
+                                                    <?= $row['estado'] ?>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                        <?php
                                                     }
                                                 ?>
-                                                <?php endif; ?>
-                                            </table>
-                                        </div>
+                                        <?php endif; ?>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="copyright">
+
                                     </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="copyright">
-                                    
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
 
-    </div>
+        <!-- Jquery JS-->
+        <script src="vendor/jquery-3.2.1.min.js"></script>
+        <!-- Bootstrap JS-->
+        <script src="vendor/bootstrap-4.1/popper.min.js"></script>
+        <script src="vendor/bootstrap-4.1/bootstrap.min.js"></script>
+        <!-- Vendor JS       -->
+        <script src="vendor/slick/slick.min.js">
+        </script>
+        <script src="vendor/wow/wow.min.js"></script>
+        <script src="vendor/animsition/animsition.min.js"></script>
+        <script src="vendor/bootstrap-progressbar/bootstrap-progressbar.min.js">
+        </script>
+        <script src="vendor/counter-up/jquery.waypoints.min.js"></script>
+        <script src="vendor/counter-up/jquery.counterup.min.js">
+        </script>
+        <script src="vendor/circle-progress/circle-progress.min.js"></script>
+        <script src="vendor/perfect-scrollbar/perfect-scrollbar.js"></script>
+        <script src="vendor/chartjs/Chart.bundle.min.js"></script>
+        <script src="vendor/select2/select2.min.js">
+        </script>
 
-    <!-- Jquery JS-->
-    <script src="vendor/jquery-3.2.1.min.js"></script>
-    <!-- Bootstrap JS-->
-    <script src="vendor/bootstrap-4.1/popper.min.js"></script>
-    <script src="vendor/bootstrap-4.1/bootstrap.min.js"></script>
-    <!-- Vendor JS       -->
-    <script src="vendor/slick/slick.min.js">
-    </script>
-    <script src="vendor/wow/wow.min.js"></script>
-    <script src="vendor/animsition/animsition.min.js"></script>
-    <script src="vendor/bootstrap-progressbar/bootstrap-progressbar.min.js">
-    </script>
-    <script src="vendor/counter-up/jquery.waypoints.min.js"></script>
-    <script src="vendor/counter-up/jquery.counterup.min.js">
-    </script>
-    <script src="vendor/circle-progress/circle-progress.min.js"></script>
-    <script src="vendor/perfect-scrollbar/perfect-scrollbar.js"></script>
-    <script src="vendor/chartjs/Chart.bundle.min.js"></script>
-    <script src="vendor/select2/select2.min.js">
-    </script>
-
-    <!-- Main JS-->
-    <script src="js/main.js"></script>
+        <!-- Main JS-->
+        <script src="js/main.js"></script>
 
 </body>
 

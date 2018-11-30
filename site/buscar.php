@@ -72,7 +72,7 @@
                             <a href="home.php">
                                 <i class="fas fa-tachometer-alt"></i>Overview</a>
                         </li>
-                        <li class="active has-sub">
+                        <li>
                             <a href="material.php">
                                 <i class="fas fa-table"></i>Materiales</a>
                         </li>
@@ -84,7 +84,7 @@
                             <a href="historial.php">
                                 <i class="fas fa-archive"></i>Historial</a>
                         </li>
-                        <li>
+                        <li class="active has-sub">
                             <a href="buscar.php">
                                 <i class="fas fa-search"></i>Buscar en Historial</a>
                         </li>

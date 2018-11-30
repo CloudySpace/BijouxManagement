@@ -32,7 +32,7 @@
                 $insert->bindParam(':password', $_POST['password']);
                 $insert->bindParam(':id_Almacen', $user['id_Almacen']);
                 $insert->execute();
-                header("Location: ../site/actualizar.php");
+                header("Location: actualizar.php");
             }
             else{
                 $error = '1';
@@ -48,7 +48,7 @@
                 $delete = $conn->prepare($sql);
                 $delete->bindParam(':id', $_POST['eliminar']);
                 $delete->execute();
-                header("Location: ../site/actualizar.php");
+                header("Location: actualizar.php");
             }
             else{
                 $error = '1';
@@ -75,7 +75,7 @@
                     $update->bindParam(':id_perfil', $_POST['m_perfil']);
                     $update->bindParam(':id', $_POST['m_id']);
                     $update->execute();
-                    header("Location: ../site/actualizar.php");
+                    header("Location: actualizar.php");
                 }
                 else{
                     $error = '1';
@@ -146,6 +146,10 @@
 
     <!-- Main CSS-->
     <link href="css/theme.css" rel="stylesheet" media="all">
+    <link href="css/style.css" rel="stylesheet" media="all">
+    <link href="css/bootstrap.min.css" rel="stylesheet" media="all">
+    <link href="css/tabs.css" rel="stylesheet" media="all">
+    <link href="css/tab-menus.css" rel="stylesheet" media="all">
 
 </head>
 
@@ -182,7 +186,7 @@
                             <a href="empleado.php">
                                 <i class="far fa-check-square"></i>Empleados</a>
                         </li>
-                    
+
                         <li class="has-sub">
                             <a class="js-arrow" href="#">
                                 <i class="fas fa-copy"></i>Pages</a>
@@ -198,46 +202,6 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="has-sub">
-                            <a class="js-arrow" href="#">
-                                <i class="fas fa-desktop"></i>UI Elements</a>
-                            <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
-                                <li>
-                                    <a href="button.html">Button</a>
-                                </li>
-                                <li>
-                                    <a href="badge.html">Badges</a>
-                                </li>
-                                <li>
-                                    <a href="tab.html">Tabs</a>
-                                </li>
-                                <li>
-                                    <a href="card.html">Cards</a>
-                                </li>
-                                <li>
-                                    <a href="alert.html">Alerts</a>
-                                </li>
-                                <li>
-                                    <a href="progress-bar.html">Progress Bars</a>
-                                </li>
-                                <li>
-                                    <a href="modal.html">Modals</a>
-                                </li>
-                                <li>
-                                    <a href="switch.html">Switchs</a>
-                                </li>
-                                <li>
-                                    <a href="grid.php">Grids</a>
-                                </li>
-                                <li>
-                                    <a href="fontawesome.html">Fontawesome Icon</a>
-                                </li>
-                                <li>
-                                    <a href="typo.html">Typography</a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
                 </div>
             </nav>
         </header>
@@ -266,12 +230,12 @@
                                 <i class="far fa-check-square"></i>Empleados</a>
                         </li>
                         <li>
-                                <a href="historial.php">
-                                    <i class="far fa-check-square"></i>Historial</a>
+                            <a href="historial.php">
+                                <i class="far fa-check-square"></i>Historial</a>
                         </li>
 
-                            </ul>
-                        </li>
+                    </ul>
+                    </li>
                     </ul>
                 </nav>
             </div>
@@ -286,7 +250,7 @@
                     <div class="container-fluid">
                         <div class="header-wrap">
                             <form class="form-header" action="" method="POST">
-                                
+
                             </form>
                             <div class="header-button">
 
@@ -296,7 +260,8 @@
                                             <img src="images/admin.png" alt="Admin" />
                                         </div>
                                         <div class="content">
-                                            <a class="js-acc-btn"><?= $user['name']; ?></a>
+                                            <a class="js-acc-btn">
+                                                <?= $user['name']; ?></a>
                                         </div>
                                         <div class="account-dropdown js-dropdown">
                                             <div class="info clearfix">
@@ -306,11 +271,13 @@
                                                 <div class="content">
                                                     <h5 class="name">
                                                         <?php if(!empty($user)): ?>
-                                                        <a href="#"><?= $user['name']; ?></a>
+                                                        <a href="#">
+                                                            <?= $user['name']; ?></a>
                                                         <?php endif; ?>
                                                     </h5>
                                                     <?php if(!empty($user)): ?>
-                                                        <span class="email"><?= $user['username']; ?></span>
+                                                    <span class="email">
+                                                        <?= $user['username']; ?></span>
                                                     <?php endif; ?>
                                                 </div>
                                             </div>
@@ -324,8 +291,8 @@
                                             </div>
                                             <div class="account-dropdown__footer">
                                                 <?php if(!empty($user)): ?>
-                                                    <a href="logout.php">
-                                                        <i class="zmdi zmdi-power"></i>Logout</a>
+                                                <a href="logout.php">
+                                                    <i class="zmdi zmdi-power"></i>Logout</a>
                                                 <?php endif; ?>
                                             </div>
                                         </div>
@@ -343,10 +310,10 @@
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
                         <?php if(!empty($error)): ?>
-                            <div class="alert">
-                              <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
-                              <strong>ERROR</strong> Los datos son invalidos.
-                            </div>
+                        <div class="alert">
+                            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                            <strong>ERROR</strong> Los datos son invalidos.
+                        </div>
                         <?php endif; ?>
                         <div class="row">
                             <div class="col-lg-9">
@@ -359,18 +326,26 @@
                                                 <th>Nombre Empleado</th>
                                                 <th>Username</th>
                                                 <th>Password</th>
-                                                
+
                                             </tr>
                                         </thead>
                                         <?php if(isset($resultado)): ?>
-                                            <?php while($row = mysqli_fetch_assoc($resultado)){
+                                        <?php while($row = mysqli_fetch_assoc($resultado)){
                                         ?>
                                         <tbody>
                                             <tr>
-                                                <td><?= $row['id'] ?></td>
-                                                <td><?= $row['name'] ?></td>
-                                                <td><?= $row['username'] ?></td>
-                                                <td><?= $row['password'] ?></td>
+                                                <td>
+                                                    <?= $row['id'] ?>
+                                                </td>
+                                                <td>
+                                                    <?= $row['name'] ?>
+                                                </td>
+                                                <td>
+                                                    <?= $row['username'] ?>
+                                                </td>
+                                                <td>
+                                                    <?= $row['password'] ?>
+                                                </td>
                                             </tr>
                                         </tbody>
                                         <?php
@@ -382,68 +357,89 @@
                             </div>
 
                             <div class="col-lg-6">
-                                <div class="card">
-                                    <div class="card-header">Agregar</div>
-                                    <div class="card-body card-block">
-                                        <form action="empleado.php" method="post" >
-                                            <div class="form-group">
-                                                <input class="au-input au-input--full" type="text" name="usuario" id="user" placeholder="Nombre"> 
+                                <div class="admintab-wrap mg-b-40">
+                                    <ul class="nav nav-tabs custom-menu-wrap custon-tab-menu-style1" style="color:#cccc">
+                                        <li><a data-toggle="tab" href="#Agregar"><span class="adminpro-icon adminpro-analytics tab-custon-ic"></span>Agregar</a>
+                                        </li>
+                                        <li><a data-toggle="tab" href="#Eliminar"><span class="adminpro-icon adminpro-analytics-arrow tab-custon-ic"></span>Eliminar</a>
+                                        </li>
+                                        <li><a data-toggle="tab" href="#Modificar"><span class="adminpro-icon adminpro-analytics-bridge tab-custon-ic"></span>Modificar</a>
+                                        </li>
+                                    </ul>
+                                    <div class="tab-content">
+                                        <div id="Agregar" class="tab-pane in active animated flipInX custon-tab-style1">
+                                            <div class="card">
+                                                <div class="card-body card-block">
+                                                    <form action="empleado.php" method="post">
+                                                        <div class="form-group">
+                                                            <input class="au-input au-input--full" type="text" name="usuario"
+                                                                id="user" placeholder="Nombre">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <input class="au-input au-input--full" type="text" name="username"
+                                                                id="user" placeholder="Username">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <input class="au-input au-input--full" type="password3"
+                                                                name="password" id="password3" placeholder="Password">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <input class="au-input au-input--full" type="user" name="perfil"
+                                                                id="user" placeholder="Perfil">
+                                                        </div>
+                                                        <div class="form-actions form-group">
+                                                            <button type="submit" class="au-btn au-btn--block au-btn--blue m-b-20">Listo</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
                                             </div>
-                                            <div class="form-group">
-                                                <input class="au-input au-input--full" type="text" name="username" id="user" placeholder="Username"> 
-                                             </div>
-                                            <div class="form-group">
-                                                <input class="au-input au-input--full" type="password3" name="password" id="password3" placeholder="Password"> 
-                                             </div>
-                                            <div class="form-group">
-                                                <input class="au-input au-input--full" type="user" name="perfil" id="user" placeholder="Perfil"> 
-                                             </div>
-                                             <div class="form-actions form-group">
-                                                <button type="submit" class="au-btn au-btn--block au-btn--blue m-b-20">Listo</button>
+                                        </div>
+                                        <div id="Eliminar" class="tab-pane animated flipInX custon-tab-style1">
+                                            <div class="card">
+                                                <div class="card-body card-block">
+                                                    <form action="empleado.php" method="post">
+                                                        <div class="form-group">
+                                                            <input class="au-input au-input--full" type="text" name="eliminar"
+                                                                id="user" placeholder="ID">
+                                                        </div>
+                                                        <div class="form-actions form-group">
+                                                            <button type="submit" class="au-btn au-btn--block au-btn--blue m-b-20">Listo</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
                                             </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="card">
-                                    <div class="card-header">Eliminar</div>
-                                    <div class="card-body card-block">
-                                        <form action="empleado.php" method="post" >
-                                            <div class="form-group">
-                                                <input class="au-input au-input--full" type="text" name="eliminar" id="user" placeholder="ID"> 
-                                             </div>
-                                            <div class="form-actions form-group">
-                                                <button type="submit" class="au-btn au-btn--block au-btn--blue m-b-20">Listo</button>
+                                        </div>
+                                        <div id="Modificar" class="tab-pane animated flipInX custon-tab-style1">
+                                            <div class="card">
+                                                <div class="card-body card-block">
+                                                    <form action="empleado.php" method="post">
+                                                        <div class="form-group">
+                                                            <input class="au-input au-input--full" type="text" name="m_id" id="user"
+                                                                placeholder="ID">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <input class="au-input au-input--full" type="text" name="m_usuario" id="user"
+                                                                placeholder="Nombre">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <input class="au-input au-input--full" type="text" name="m_username" id="user"
+                                                                placeholder="Username">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <input class="au-input au-input--full" type="password3" name="m_password"
+                                                                id="password3" placeholder="Password">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <input class="au-input au-input--full" type="user" name="m_perfil" id="user"
+                                                                placeholder="Perfil">
+                                                        </div>
+                                                        <div class="form-actions form-group">
+                                                            <button type="submit" class="au-btn au-btn--block au-btn--blue m-b-20">Listo</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
                                             </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="card">
-                                    <div class="card-header">Modificar</div>
-                                    <div class="card-body card-block">
-                                        <form action="empleado.php" method="post" >
-                                            <div class="form-group">
-                                                <input class="au-input au-input--full" type="text" name="m_id" id="user" placeholder="ID"> 
-                                             </div>
-                                            <div class="form-group">
-                                                <input class="au-input au-input--full" type="text" name="m_usuario" id="user" placeholder="Nombre"> 
-                                            </div>
-                                            <div class="form-group">
-                                                <input class="au-input au-input--full" type="text" name="m_username" id="user" placeholder="Username"> 
-                                             </div>
-                                            <div class="form-group">
-                                                <input class="au-input au-input--full" type="password3" name="m_password" id="password3" placeholder="Password"> 
-                                             </div>
-                                            <div class="form-group">
-                                                <input class="au-input au-input--full" type="user" name="m_perfil" id="user" placeholder="Perfil"> 
-                                             </div>
-                                             <div class="form-actions form-group">
-                                                <button type="submit" class="au-btn au-btn--block au-btn--blue m-b-20">Listo</button>
-                                            </div>
-                                        </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -484,6 +480,7 @@
 
     <!-- Main JS-->
     <script src="js/main.js"></script>
+    <script src="js/bootstrap.min.js"></script>
 
 </body>
 

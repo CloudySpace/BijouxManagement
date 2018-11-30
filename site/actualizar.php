@@ -1,3 +1,3 @@
 <?php
-    header("Location: ../site/empleado.php");
+    header("Location: empleado.php");
 ?>

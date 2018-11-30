@@ -131,7 +131,7 @@
             color: black;
         }
     </style>
-    
+
     <!-- Required meta tags-->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -214,45 +214,6 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="has-sub">
-                            <a class="js-arrow" href="#">
-                                <i class="fas fa-desktop"></i>UI Elements</a>
-                            <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
-                                <li>
-                                    <a href="button.html">Button</a>
-                                </li>
-                                <li>
-                                    <a href="badge.html">Badges</a>
-                                </li>
-                                <li>
-                                    <a href="tab.html">Tabs</a>
-                                </li>
-                                <li>
-                                    <a href="card.html">Cards</a>
-                                </li>
-                                <li>
-                                    <a href="alert.html">Alerts</a>
-                                </li>
-                                <li>
-                                    <a href="progress-bar.html">Progress Bars</a>
-                                </li>
-                                <li>
-                                    <a href="modal.html">Modals</a>
-                                </li>
-                                <li>
-                                    <a href="switch.html">Switchs</a>
-                                </li>
-                                <li>
-                                    <a href="grid.php">Grids</a>
-                                </li>
-                                <li>
-                                    <a href="fontawesome.html">Fontawesome Icon</a>
-                                </li>
-                                <li>
-                                    <a href="typo.html">Typography</a>
-                                </li>
-                            </ul>
-                        </li>
                     </ul>
                 </div>
             </nav>
@@ -277,13 +238,10 @@
                             <a href="materialEmpleado.php">
                                 <i class="fas fa-table"></i>Materiales</a>
                         </li>
-    
+
                         <li>
                             <a href="historialEmpleado.php">
                                 <i class="fas fa-book"></i>Historial</a>
-                        </li>
-                        
-                            </ul>
                         </li>
                     </ul>
                 </nav>
@@ -299,7 +257,7 @@
                     <div class="container-fluid">
                         <div class="header-wrap">
                             <form class="form-header" action="" method="POST">
-                                
+
                             </form>
                             <div class="header-button">
 
@@ -309,7 +267,8 @@
                                             <img src="images/user.png" alt="User" />
                                         </div>
                                         <div class="content">
-                                             <a class="js-acc-btn"><?= $user['name']; ?></a>
+                                            <a class="js-acc-btn">
+                                                <?= $user['name']; ?></a>
                                         </div>
                                         <div class="account-dropdown js-dropdown">
                                             <div class="info clearfix">
@@ -321,11 +280,13 @@
                                                 <div class="content">
                                                     <h5 class="name">
                                                         <?php if(!empty($user)): ?>
-                                                        <a href="#"><?= $user['name']; ?></a>
+                                                        <a href="#">
+                                                            <?= $user['name']; ?></a>
                                                         <?php endif; ?>
                                                     </h5>
                                                     <?php if(!empty($user)): ?>
-                                                        <span class="email"><?= $user['username']; ?></span>
+                                                    <span class="email">
+                                                        <?= $user['username']; ?></span>
                                                     <?php endif; ?>
                                                 </div>
                                             </div>
@@ -339,8 +300,8 @@
                                             </div>
                                             <div class="account-dropdown__footer">
                                                 <?php if(!empty($user)): ?>
-                                                    <a href="logout.php">
-                                                        <i class="zmdi zmdi-power"></i>Logout</a>
+                                                <a href="logout.php">
+                                                    <i class="zmdi zmdi-power"></i>Logout</a>
                                                 <?php endif; ?>
                                             </div>
                                         </div>
@@ -358,56 +319,62 @@
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
                         <?php if(!empty($messageInsert)): ?>
-                            <div class="alert">
-                              <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
-                              <strong>ERROR</strong> Los datos son invalidos.
-                            </div>
+                        <div class="alert">
+                            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                            <strong>ERROR</strong> Los datos son invalidos.
+                        </div>
                         <?php endif; ?>
                         <div class="row m-t-30">
-                                <div class="col-lg-6">
-                                      <h2 class="title-1 m-b-25">Ingresa material</h2>
-                                        <div class="card">
-                                            <div class="card-header">Entrada</div>
-                                            <div class="card-body card-block">
-                                                <form action="materialEmpleado.php" method="post">
-                                                    <div class="form-group">
-                                                       <input class="au-input au-input--full" type="text" name="material_e" id="user" placeholder="Material"> 
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <input class="au-input au-input--full" type="text" name="quilataje_e" id="user" placeholder="Quilataje">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <input class="au-input au-input--full" type="text" name="peso_e" id="user" placeholder="Peso">
-                                                    </div>
-                                                    <div class="form-actions form-group">
-                                                        <button type="submit" class="au-btn au-btn--block au-btn--blue m-b-20">Listo</button>
-                                                    </div>
-                                                </form>
+                            <div class="col-lg-6">
+                                <h2 class="title-1 m-b-25">Ingresa material</h2>
+                                <div class="card">
+                                    <div class="card-header">Entrada</div>
+                                    <div class="card-body card-block">
+                                        <form action="materialEmpleado.php" method="post">
+                                            <div class="form-group">
+                                                <input class="au-input au-input--full" type="text" name="material_e" id="user"
+                                                    placeholder="Material">
                                             </div>
-                                        </div>
+                                            <div class="form-group">
+                                                <input class="au-input au-input--full" type="text" name="quilataje_e"
+                                                    id="user" placeholder="Quilataje">
+                                            </div>
+                                            <div class="form-group">
+                                                <input class="au-input au-input--full" type="text" name="peso_e" id="user"
+                                                    placeholder="Peso">
+                                            </div>
+                                            <div class="form-actions form-group">
+                                                <button type="submit" class="au-btn au-btn--block au-btn--blue m-b-20">Listo</button>
+                                            </div>
+                                        </form>
                                     </div>
-                                    <div class="col-lg-6">
-                                            <h2 class="title-1 m-b-25">Retira material</h2>
-                                            <div class="card">
-                                                <div class="card-header">Salida</div>
-                                                <div class="card-body card-block">
-                                                <form action="materialEmpleado.php" method="post" >
-                                                    <div class="form-group">
-                                                        <input class="au-input au-input--full" type="text" name="material_s" id="user" placeholder="Material">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <input class="au-input au-input--full" type="text" name="quilataje_s" id="user" placeholder="Quilataje">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <input class="au-input au-input--full" type="text" name="peso_s" id="user" placeholder="Peso">
-                                                    </div>
-                                                    <div class="form-actions form-group">
-                                                        <button type="submit" class="au-btn au-btn--block au-btn--blue m-b-20">Listo</button>
-                                                        </div>
-                                                    </form>
-                                                </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <h2 class="title-1 m-b-25">Retira material</h2>
+                                <div class="card">
+                                    <div class="card-header">Salida</div>
+                                    <div class="card-body card-block">
+                                        <form action="materialEmpleado.php" method="post">
+                                            <div class="form-group">
+                                                <input class="au-input au-input--full" type="text" name="material_s" id="user"
+                                                    placeholder="Material">
                                             </div>
-                                        </div>
+                                            <div class="form-group">
+                                                <input class="au-input au-input--full" type="text" name="quilataje_s"
+                                                    id="user" placeholder="Quilataje">
+                                            </div>
+                                            <div class="form-group">
+                                                <input class="au-input au-input--full" type="text" name="peso_s" id="user"
+                                                    placeholder="Peso">
+                                            </div>
+                                            <div class="form-actions form-group">
+                                                <button type="submit" class="au-btn au-btn--block au-btn--blue m-b-20">Listo</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

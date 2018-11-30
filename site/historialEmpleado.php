@@ -167,13 +167,10 @@
                             <a href="materialEmpleado.php">
                                 <i class="fas fa-table"></i>Materiales</a>
                         </li>
-                       
+
                         <li class="active has-sub">
                             <a href="historialEmpleado.php">
                                 <i class="fas fa-book"></i>Historial</a>
-                        </li>
-                        
-                            </ul>
                         </li>
                     </ul>
                 </nav>
@@ -189,7 +186,7 @@
                     <div class="container-fluid">
                         <div class="header-wrap">
                             <form class="form-header" action="" method="POST">
-                                
+
                             </form>
                             <div class="header-button">
 
@@ -199,7 +196,8 @@
                                             <img src="images/user.png" alt="User" />
                                         </div>
                                         <div class="content">
-                                             <a class="js-acc-btn"><?= $user['name']; ?></a>
+                                            <a class="js-acc-btn">
+                                                <?= $user['name']; ?></a>
                                         </div>
                                         <div class="account-dropdown js-dropdown">
                                             <div class="info clearfix">
@@ -211,11 +209,13 @@
                                                 <div class="content">
                                                     <h5 class="name">
                                                         <?php if(!empty($user)): ?>
-                                                        <a href="#"><?= $user['name']; ?></a>
+                                                        <a href="#">
+                                                            <?= $user['name']; ?></a>
                                                         <?php endif; ?>
                                                     </h5>
                                                     <?php if(!empty($user)): ?>
-                                                        <span class="email"><?= $user['username']; ?></span>
+                                                    <span class="email">
+                                                        <?= $user['username']; ?></span>
                                                     <?php endif; ?>
                                                 </div>
                                             </div>
@@ -229,8 +229,8 @@
                                             </div>
                                             <div class="account-dropdown__footer">
                                                 <?php if(!empty($user)): ?>
-                                                    <a href="logout.php">
-                                                        <i class="zmdi zmdi-power"></i>Logout</a>
+                                                <a href="logout.php">
+                                                    <i class="zmdi zmdi-power"></i>Logout</a>
                                                 <?php endif; ?>
                                             </div>
                                         </div>
@@ -250,39 +250,49 @@
 
                         <div class="row m-t-30">
                             <div class="col-md-12">
-                                 <h2 class="title-1 m-b-25">Historial Completo</h2>
+                                <h2 class="title-1 m-b-25">Historial Completo</h2>
                                 <!-- DATA TABLE-->
                                 <div class="table-responsive m-b-40">
-                                        <table class="table table-borderless table-data3">
-                                            <thead>
-                                                <tr>
-                                                    <th>Nombre</th>
-                                                    <th>Quilataje</th>
-                                                    <th>Peso (kg)</th>
-                                                    <th>Fecha</th>
-                                                    <th>Movimiento</th>
-                                                </tr>
-                                            </thead>
-                                            <?php if(isset($resultado)): ?>
-                                            <?php while($row = mysqli_fetch_assoc($resultado) ){
+                                    <table class="table table-borderless table-data3">
+                                        <thead>
+                                            <tr>
+                                                <th>Nombre</th>
+                                                <th>Quilataje</th>
+                                                <th>Peso (kg)</th>
+                                                <th>Fecha</th>
+                                                <th>Movimiento</th>
+                                            </tr>
+                                        </thead>
+                                        <?php if(isset($resultado)): ?>
+                                        <?php while($row = mysqli_fetch_assoc($resultado) ){
                                             ?>
-                                                <tbody>
-                                                    <tr>
-                                                        <td><?= $row['name']; ?></td>
-                                                        <td><?= $row['quilataje']; ?></td>
-                                                        <td><?= $row['peso']; ?></td>
-                                                        <td><?= $row['fecha_actualizacion']; ?></td>
-                                                        <td><?= $row['estado']; ?></td>
-                                                    </tr>
-                                                    
-                                                </tbody>
-                                            <?php
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <?= $row['name']; ?>
+                                                </td>
+                                                <td>
+                                                    <?= $row['quilataje']; ?>
+                                                </td>
+                                                <td>
+                                                    <?= $row['peso']; ?>
+                                                </td>
+                                                <td>
+                                                    <?= $row['fecha_actualizacion']; ?>
+                                                </td>
+                                                <td>
+                                                    <?= $row['estado']; ?>
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                        <?php
                                                 }
                                             ?>
-                                            <?php endif; ?>
-                                            
-                                        </table>
-                                    </div>
+                                        <?php endif; ?>
+
+                                    </table>
+                                </div>
                                 <!-- END DATA TABLE-->
                             </div>
                         </div>

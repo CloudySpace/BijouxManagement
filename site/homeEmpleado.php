@@ -84,7 +84,7 @@
                             <a href="materialEmpleado.php">
                                 <i class="fas fa-table"></i>Materiales</a>
                         </li>
-                        
+
                         <li>
                             <a href="historialEmpleado.php">
                                 <i class="fas fa-book"></i>Historial</a>
@@ -101,45 +101,6 @@
                                 </li>
                                 <li>
                                     <a href="forget-pass.html">Forget Password</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="has-sub">
-                            <a class="js-arrow" href="#">
-                                <i class="fas fa-desktop"></i>UI Elements</a>
-                            <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
-                                <li>
-                                    <a href="button.html">Button</a>
-                                </li>
-                                <li>
-                                    <a href="badge.html">Badges</a>
-                                </li>
-                                <li>
-                                    <a href="tab.html">Tabs</a>
-                                </li>
-                                <li>
-                                    <a href="card.html">Cards</a>
-                                </li>
-                                <li>
-                                    <a href="alert.html">Alerts</a>
-                                </li>
-                                <li>
-                                    <a href="progress-bar.html">Progress Bars</a>
-                                </li>
-                                <li>
-                                    <a href="modal.html">Modals</a>
-                                </li>
-                                <li>
-                                    <a href="switch.html">Switchs</a>
-                                </li>
-                                <li>
-                                    <a href="grid.php">Grids</a>
-                                </li>
-                                <li>
-                                    <a href="fontawesome.html">Fontawesome Icon</a>
-                                </li>
-                                <li>
-                                    <a href="typo.html">Typography</a>
                                 </li>
                             </ul>
                         </li>
@@ -167,14 +128,14 @@
                             <a href="materialEmpleado.php">
                                 <i class="fas fa-table"></i>Materiales</a>
                         </li>
-                        
+
                         <li>
                             <a href="historialEmpleado.php">
                                 <i class="fas fa-book"></i>Historial</a>
                         </li>
-                        
-                            </ul>
-                        </li>
+
+                    </ul>
+                    </li>
                     </ul>
                 </nav>
             </div>
@@ -189,7 +150,7 @@
                     <div class="container-fluid">
                         <div class="header-wrap">
                             <form class="form-header" action="" method="POST">
-                                
+
                             </form>
                             <div class="header-button">
 
@@ -199,7 +160,8 @@
                                             <img src="images/user.png" alt="User" />
                                         </div>
                                         <div class="content">
-                                             <a class="js-acc-btn"><?= $user['name']; ?></a>
+                                            <a class="js-acc-btn">
+                                                <?= $user['name']; ?></a>
                                         </div>
                                         <div class="account-dropdown js-dropdown">
                                             <div class="info clearfix">
@@ -211,11 +173,13 @@
                                                 <div class="content">
                                                     <h5 class="name">
                                                         <?php if(!empty($user)): ?>
-                                                        <a href="#"><?= $user['name']; ?></a>
+                                                        <a href="#">
+                                                            <?= $user['name']; ?></a>
                                                         <?php endif; ?>
                                                     </h5>
                                                     <?php if(!empty($user)): ?>
-                                                        <span class="email"><?= $user['username']; ?></span>
+                                                    <span class="email">
+                                                        <?= $user['username']; ?></span>
                                                     <?php endif; ?>
                                                 </div>
                                             </div>
@@ -229,8 +193,8 @@
                                             </div>
                                             <div class="account-dropdown__footer">
                                                 <?php if(!empty($user)): ?>
-                                                    <a href="logout.php">
-                                                        <i class="zmdi zmdi-power"></i>Logout</a>
+                                                <a href="logout.php">
+                                                    <i class="zmdi zmdi-power"></i>Logout</a>
                                                 <?php endif; ?>
                                             </div>
                                         </div>
@@ -262,39 +226,49 @@
                                 <h2 class="title-1 m-b-25">Movimientos Recientes</h2>
                                 <!-- DATA TABLE-->
                                 <div class="table-responsive m-b-40">
-                                        <table class="table table-borderless table-data3">
-                                            <thead>
-                                                <tr>
-                                                    <th>Nombre</th>
-                                                    <th>Quilataje</th>
-                                                    <th>Peso (kg)</th>
-                                                    <th>Fecha</th>
-                                                    <th>Movimiento</th>
-                                                </tr>
-                                            </thead>
-                                            <?php if(isset($resultado)): ?>
-                                            <?php $cont = 0; ?>
-                                            <?php while($row = mysqli_fetch_assoc($resultado) and $cont < 10){
+                                    <table class="table table-borderless table-data3">
+                                        <thead>
+                                            <tr>
+                                                <th>Nombre</th>
+                                                <th>Quilataje</th>
+                                                <th>Peso (kg)</th>
+                                                <th>Fecha</th>
+                                                <th>Movimiento</th>
+                                            </tr>
+                                        </thead>
+                                        <?php if(isset($resultado)): ?>
+                                        <?php $cont = 0; ?>
+                                        <?php while($row = mysqli_fetch_assoc($resultado) and $cont < 10){
                                             ?>
-                                                <tbody>
-                                                    <tr>
-                                                        <td><?= $row['name']; ?></td>
-                                                        <td><?= $row['quilataje']; ?></td>
-                                                        <td><?= $row['peso']; ?></td>
-                                                        <td><?= $row['fecha_actualizacion']; ?></td>
-                                                        <td><?= $row['estado']; ?></td>
-                                                    </tr>
-                                                    
-                                                </tbody>
-                                            <?php
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <?= $row['name']; ?>
+                                                </td>
+                                                <td>
+                                                    <?= $row['quilataje']; ?>
+                                                </td>
+                                                <td>
+                                                    <?= $row['peso']; ?>
+                                                </td>
+                                                <td>
+                                                    <?= $row['fecha_actualizacion']; ?>
+                                                </td>
+                                                <td>
+                                                    <?= $row['estado']; ?>
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                        <?php
                                                 $cont = $cont + 1;
                                                 }
                                             ?>
-                                            <?php endif; ?>
-                                            
-                                        </table>
-                                    </div>
-                                    <!-- END DATA TABLE-->
+                                        <?php endif; ?>
+
+                                    </table>
+                                </div>
+                                <!-- END DATA TABLE-->
                             </div>
                         </div>
 

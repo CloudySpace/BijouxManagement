@@ -2,7 +2,7 @@
 
   session_start();
   if (isset($_SESSION['user_id'])) {
-    header('Location: ../site/puente.php');
+    header('Location: puente.php');
   }
 
   require 'conexion.php';
@@ -14,7 +14,7 @@
     $message = '';
     if ($results && count($results) > 0 && ($_POST['password'] == $results['password'])) {
       $_SESSION['user_id'] = $results['id'];
-      header("Location: ../site/puente.php");
+      header("Location: puente.php");
     } else {
       $message = 'Datos erroneos';
     }
@@ -69,20 +69,25 @@
                                 <img src="images/icon/logo.png" alt="BijouxManagement">
                             </a>
                             <?php if(!empty($message)): ?>
-                              <p> <?= $message ?></p>
+                            <p>
+                                <?= $message ?>
+                            </p>
                             <?php endif; ?>
                         </div>
                         <div class="login-form">
                             <form action="index.php" method="post">
                                 <div class="form-group">
                                     <label>Usuario</label>
-                                    <input class="au-input au-input--full" type="text" name="username" id="user" placeholder="Usuario">
+                                    <input class="au-input au-input--full" type="text" name="username" id="user"
+                                        placeholder="Usuario">
                                 </div>
                                 <div class="form-group">
                                     <label>Password</label>
-                                    <input class="au-input au-input--full" type="password" name="password" id="password" placeholder="Password">
+                                    <input class="au-input au-input--full" type="password" name="password" id="password"
+                                        placeholder="Password">
                                 </div>
-                                <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit" value="Login">INICIAR SESIÓN </button>
+                                <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit" value="Login">INICIAR
+                                    SESIÓN </button>
                             </form>
                         </div>
                     </div>

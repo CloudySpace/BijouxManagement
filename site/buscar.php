@@ -12,8 +12,12 @@
     if ($results && count($results) > 0) {
         $user = $results;
         $busqued = $user['id_Almacen'];
+        
+        if (!empty($_POST['search'])){
+        $filtro = '%'.$_POST['search'].'%';
         $link = mysqli_connect("localhost", "root", "", "joyeria") or die ('Error de conexion: ' . mysqli_error());
-        $resultado = mysqli_query($link,"SELECT * FROM material WHERE id_Almacen = '$busqued'");
+        $result_filtro =  mysqli_query($link,"SELECT registro.fecha_actualizacion, empleado.name as nombre, material.name, registro.peso, material.quilataje, registro.estado, material.id as id_material, empleado.id as id_empleado FROM material,registro,empleado WHERE registro.id_Almacen = '$busqued' and material.id_Almacen = '$busqued' and empleado.id_Almacen = '$busqued' and material.id = registro.id_material and empleado.id = registro.id_empleado and (registro.fecha_actualizacion LIKE '$filtro' or registro.estado LIKE '$filtro' or empleado.name LIKE '$filtro') ORDER BY registro.fecha_actualizacion DESC");   
+        }
     }
   }
 ?>
@@ -101,8 +105,11 @@
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
                         <div class="header-wrap">
-                            <form class="form-header" action="" method="POST">
-
+                            <form class="form-header" action="buscar.php" method="POST">
+                                <input class="au-input au-input--xl" type="text" name="search" placeholder="Buscar por fecha, estado o empleado " />
+                                <button class="au-btn--submit" type="submit">
+                                    <i class="zmdi zmdi-search"></i>
+                                </button>
                             </form>
                             <div class="header-button">
 
@@ -169,29 +176,29 @@
                                     <table class="table table-borderless table-data3">
                                         <thead>
                                             <tr>
-                                                <th>ID Material</th>
-                                                <th>Nombre</th>
-                                                <th>Quilataje</th>
-                                                <th>Peso (kg)</th>
+                                                <th>Fecha</th>
+                                                <th>ID Empleado</th>
+                                                <th>Nombre Empleado</th>
+                                                <th class="text-right">ID Material</th>
+                                                <th class="text-right">Nombre Material</th>
+                                                <th class="text-right">Peso</th>
+                                                <th class="text-right">Quilataje</th>
+                                                <th class="text-right">Estado</th>
                                             </tr>
                                         </thead>
-                                        <?php if(isset($resultado)): ?>
-                                        <?php while($row = mysqli_fetch_assoc($resultado)){
+                                        <?php if(isset($result_filtro)): ?>
+                                            <?php while($row = mysqli_fetch_assoc($result_filtro)){
                                         ?>
                                         <tbody>
                                             <tr>
-                                                <td>
-                                                    <?= $row['id'] ?>
-                                                </td>
-                                                <td>
-                                                    <?= $row['name'] ?>
-                                                </td>
-                                                <td class="text-right">
-                                                    <?= $row['quilataje'] ?>
-                                                </td>
-                                                <td class="text-right">
-                                                    <?= $row['peso'] ?>
-                                                </td>
+                                                <td><?= $row['fecha_actualizacion'] ?></td>
+                                                <td><?= $row['id_empleado'] ?></td>
+                                                <td><?= $row['nombre'] ?></td>
+                                                <td><?= $row['id_material'] ?></td>
+                                                <td><?= $row['name'] ?></td>
+                                                <td class="text-right"><?= $row['peso'] ?></td>
+                                                <td class="text-right"><?= $row['quilataje'] ?></td>
+                                                <td class="text-right"><?= $row['estado'] ?></td>
                                             </tr>
                                         </tbody>
                                         <?php

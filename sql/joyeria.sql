@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Nov 26, 2018 at 12:00 AM
+-- Generation Time: Dec 04, 2018 at 03:16 AM
 -- Server version: 5.7.21
 -- PHP Version: 7.2.4
 
@@ -21,6 +21,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `joyeria`
 --
+CREATE DATABASE IF NOT EXISTS `joyeria` DEFAULT CHARACTER SET utf8 COLLATE utf8_spanish_ci;
+USE `joyeria`;
 
 -- --------------------------------------------------------
 
@@ -63,20 +65,16 @@ CREATE TABLE IF NOT EXISTS `empleado` (
   UNIQUE KEY `un_user` (`username`),
   KEY `FK_idPerfil` (`id_perfil`),
   KEY `FK_idAlmacen` (`id_Almacen`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Dumping data for table `empleado`
 --
 
 INSERT INTO `empleado` (`id`, `id_perfil`, `name`, `username`, `password`, `id_Almacen`) VALUES
-(1, 1, 'Yannick', 'yannadmin', '123456789', 1),
-(2, 2, 'Gustavo', 'gus', '987654321', 1),
-(3, 1, 'Carlos', 'carlitossss', '13579', 1),
-(4, 2, 'John Doe', 'john', '111', 2),
-(5, 1, 'Mary Jane', 'mary', '222', 3),
-(6, 1, 'Kat', 'kat', 'k', 2),
-(7, 2, 'Juan', 'juan', 'j', 3);
+(1, 1, 'Admin', 'Admin', 'Admin', 1),
+(2, 2, 'x', 'x', 'ejemplo', 1),
+(3, 2, 'y', 'y', 'y', 1);
 
 -- --------------------------------------------------------
 
@@ -93,22 +91,18 @@ CREATE TABLE IF NOT EXISTS `material` (
   `id_Almacen` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_idAlmacenMaterial` (`id_Almacen`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Dumping data for table `material`
 --
 
 INSERT INTO `material` (`id`, `name`, `quilataje`, `peso`, `id_Almacen`) VALUES
-(1, 'oro', 18.000, 200.000, 1),
+(1, 'oro', 18.000, 202.000, 1),
 (2, 'plata', 12.000, 100.000, 1),
-(3, 'platino', 0.710, 300.000, 2),
-(4, 'oro', 1.300, 500.000, 3),
-(5, 'oro', 18.000, 200.000, 2),
-(6, 'plata', 12.000, 100.000, 3),
-(7, 'platino', 0.710, 300.000, 1),
-(8, 'plata', 12.000, 100.000, 2),
-(9, 'platino', 0.710, 300.000, 3);
+(3, 'platino', 20.000, 20.000, 1),
+(4, 'oro', 21.000, 100.000, 1),
+(5, 'plata', 18.000, 300.000, 1);
 
 -- --------------------------------------------------------
 
@@ -144,19 +138,23 @@ CREATE TABLE IF NOT EXISTS `registro` (
   `id_material` int(11) NOT NULL,
   `peso` int(11) NOT NULL,
   `fecha_actualizacion` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `estado` varchar(20) COLLATE utf8_spanish_ci NOT NULL, 
-  `id_Almacen` int(11) NOT NULL,  
+  `estado` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
+  `id_Almacen` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_idAlmacenRegistro` (`id_Almacen`),
   KEY `fk_empleado_registro` (`id_empleado`),
   KEY `fk_material_registro` (`id_material`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Dumping data for table `registro`
 --
 
-INSERT INTO `registro` (`id`, `id_empleado`, `id_material`, `peso`, `fecha_actualizacion`,`estado`, `id_Almacen`) VALUES (1, 2, 1, 50, '2018-11-06 19:54:55','ENTRADA', 1);
+INSERT INTO `registro` (`id`, `id_empleado`, `id_material`, `peso`, `fecha_actualizacion`, `estado`, `id_Almacen`) VALUES
+(1, 2, 1, 5, '2018-11-29 19:34:57', 'ENTRADA', 1),
+(2, 2, 1, 3, '2018-11-29 19:35:15', 'SALIDA', 1),
+(3, 2, 3, 25, '2018-12-01 00:04:00', 'ENTRADA', 1),
+(4, 2, 3, 15, '2018-12-01 00:08:21', 'SALIDA', 1);
 
 --
 -- Constraints for dumped tables

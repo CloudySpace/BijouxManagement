@@ -16,6 +16,12 @@
         $link = mysqli_connect("localhost", "root", "", "joyeria") or die ('Error de conexion: ' . mysqli_error());
         $resultado = mysqli_query($link,"SELECT * FROM empleado WHERE id_Almacen = '$busqued' and id_perfil = 2");
         
+        if (!empty($_POST['search'])){
+           $filtro = '%'.$_POST['search'].'%'; 
+           $link = mysqli_connect("localhost", "root", "", "joyeria") or die ('Error de conexion: ' . mysqli_error());
+           $busqueda = mysqli_query($link,"SELECT * FROM empleado WHERE id_Almacen = '$busqued' and id_perfil = 2 and (name LIKE '$filtro')");
+        }
+        
         if(!empty($_POST['usuario']) && !empty($_POST['username']) && !empty($_POST['password']) && !empty($_POST['perfil'])){
             $existe = $conn->prepare('SELECT * FROM empleado WHERE username = :username');
             $existe->bindParam(':username', $_POST['username']);
@@ -199,8 +205,11 @@
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
                         <div class="header-wrap">
-                            <form class="form-header" action="" method="POST">
-
+                            <form class="form-header" action="empleado.php" method="POST">
+                                <input class="au-input au-input--xl" type="text" name="search" placeholder="Buscar por nombre de empleado " />
+                                <button class="au-btn--submit" type="submit">
+                                    <i class="zmdi zmdi-search"></i>
+                                </button>
                             </form>
                             <div class="header-button">
 
@@ -266,6 +275,48 @@
                         </div>
                         <?php endif; ?>
                         <div class="row">
+                            
+                            <div class="col-lg-9">
+                                <h2 class="title-1 m-b-25">Resultado de Busqueda</h2>
+                                <div class="table-responsive table--no-card m-b-40">
+                                    
+                                    <table class="table table-borderless table-striped table-earning">
+                                        <thead>
+                                            <tr>
+                                                <th>ID Empleado</th>
+                                                <th>Nombre Empleado</th>
+                                                <th>Username</th>
+                                                <th>Password</th>
+
+                                            </tr>
+                                        </thead>
+                                        <?php if(isset($busqueda)): ?>
+                                        <?php while($row = mysqli_fetch_assoc($busqueda)){
+                                        ?>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <?= $row['id'] ?>
+                                                </td>
+                                                <td>
+                                                    <?= $row['name'] ?>
+                                                </td>
+                                                <td>
+                                                    <?= $row['username'] ?>
+                                                </td>
+                                                <td>
+                                                    <?= $row['password'] ?>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                        <?php
+                                            }
+                                        ?>
+                                    </table>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                            
                             <div class="col-lg-9">
                                 <h2 class="title-1 m-b-25">Empleados</h2>
                                 <div class="table-responsive table--no-card m-b-40">
